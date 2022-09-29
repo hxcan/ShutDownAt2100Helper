@@ -133,26 +133,30 @@ public class ShutDownAt2100Manager
 
   protected Set<Long> committedTransactionIdSet=new HashSet<Long>(); //!<已提交的事务编号集合。
 	
-	/**
-	 * Constructor.
-	 */
-	public ShutDownAt2100Manager(Context context)
-	{
-      this.context=context;
-	} //private void startUdpServer()
+  /**
+  * Constructor.
+  */
+  public ShutDownAt2100Manager(Context context)
+  {
+    this.context=context;
+      
+    loadShutDownAt2100Configuration(); //载入21点关机的配置信息。
 
-	/**
-	 * 广播接收器。
-	 */
-	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() 
-	{
-		@Override
-		/**
-		 * 接收到广播。
-		 */
-		public void onReceive(Context context, Intent intent) 
-		{
-			String action = intent.getAction(); //获取广播中带的动作字符串。
+    checkShutDownTime(); //检查关机时间。
+  } //private void startUdpServer()
+
+  /**
+  * 广播接收器。
+  */
+  private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() 
+  {
+    @Override
+    /**
+    * 接收到广播。
+    */
+    public void onReceive(Context context, Intent intent) 
+    {
+      String action = intent.getAction(); //获取广播中带的动作字符串。
 			
 			if (Constants.Operation.CommitText.equals(action)) //提交文本内容。 
 			{
@@ -325,7 +329,7 @@ public class ShutDownAt2100Manager
 	/**
 	 * 检查关机时间。
 	 */
-	private void checkShutDownTime()
+	public void checkShutDownTime()
 	{
       //是否超过了关机时间。
 
