@@ -49,10 +49,10 @@ import com.koushikdutta.async.http.server.HttpServerRequestCallback;
 // import com.stupidbeauty.lanime.callback.HideKeyboardCallback;
 // import com.stupidbeauty.lanime.callback.PhoneAvatarCallback;
 // import com.stupidbeauty.lanime.callback.PhoneInformationCallback;
-import com.stupidbeauty.lanime.network.volley.GsonRequest;
-import com.stupidbeauty.lanime.network.volley.MapUtils;
-import com.stupidbeauty.lanime.network.volley.VolleyManager;
-import com.stupidbeauty.lanime.network.volley.WebServiceResponse;
+// import com.stupidbeauty.lanime.network.volley.GsonRequest;
+// import com.stupidbeauty.lanime.network.volley.MapUtils;
+// import com.stupidbeauty.lanime.network.volley.VolleyManager;
+// import com.stupidbeauty.lanime.network.volley.WebServiceResponse;
 import com.stupidbeauty.shutdownat2100.AmqpMessage;
 import com.stupidbeauty.shutdownat2100.Sda2FunctionName;
 import com.stupidbeauty.shutdownat2100.Sda2Message;
@@ -143,49 +143,6 @@ public class ShutDownAt2100Manager
 	private String clipboardText=""; //!<剪贴板文字内容。
 	
 	/**
-	 * 检查更新。
-	 */
-	protected void checkUpdate() 
-	{
-      Log.d(TAG,"checkUpdate,reporting new ip."); //Debug.
-      requestConnectMe(callbackIp); //请求电脑连接到本设备。
-	} //protected void checkUpdate()
-	
-	/**
-	   * 请求电脑端连接到本手机。
-	   * @param text 电脑端的IP。
-	   */
-	  private void requestConnectMe(String text) 
-	  {
-		  String gsonUrl = "http://"+text+":18122/connectMe/"; //The gson request string.最新版本号。
-		  
-		  Log.d(TAG,"requestConnectMe,gsonUrl:"+gsonUrl); //Debug.
-			
-		  GsonRequest<WebServiceResponse> gsonRequest=new GsonRequest<WebServiceResponse>
-		  (
-				  com.android.volley.Request.Method.GET,
-				  gsonUrl,
-				  WebServiceResponse.class,
-				  new Response.Listener<WebServiceResponse>() {
-					  public void onResponse(WebServiceResponse response) {
-
-						  parseSubmitPasswordResponse(response); //解析请求结果。
-					  }
-				  },
-				  new Response.ErrorListener() 
-				  {
-					  @Override
-					  public void onErrorResponse(VolleyError error) 
-					  {
-						  Log.e(TAG,error.getMessage(),error);
-					  } //public void onErrorResponse(VolleyError error)
-				  } //new Response.ErrorListener()
-				  );
-
-		  mQueue.add(gsonRequest); //添加请求。
-	  } //private void requestConnectMe(String text)
-
-	/**
 	 * 启动友军“21点关机”的服务。
 	 */
 	protected void startFriendShutDownAt2100Service() 
@@ -255,13 +212,13 @@ public class ShutDownAt2100Manager
         shutDownMinute = commitTextMessage.getMiniute();
 
 
-        PreferenceManagerUtil.setShutdownHour(shutDownHour);
-        PreferenceManagerUtil.setShutdownMinute(shutDownMinute);
+        PreferenceManagerUtil.setShutdownHour(shutDownHour,context);
+        PreferenceManagerUtil.setShutdownMinute(shutDownMinute,context);
       } //try //尝试读取内容
       catch (IOException e) //文件不存在
       {
-        shutDownHour=PreferenceManagerUtil.getShutdownHour();
-        shutDownMinute=PreferenceManagerUtil.getShutdownMinute();
+        shutDownHour=PreferenceManagerUtil.getShutdownHour(context);
+        shutDownMinute=PreferenceManagerUtil.getShutdownMinute(context);
 
         e.printStackTrace();
       } //catch (IOException e) //文件不存在
@@ -333,97 +290,6 @@ public class ShutDownAt2100Manager
 
 	} //private void checkWhetherExceededShutDownTime()
 
-
-	/**
-	 * 报告正在输入普通文字。
-	 */
-	private void reportInputtingNormalText() 
-	{
-		Map<String,String> map = new HashMap<String, String>();
-
-		map.put("inputType", "text"); //Add the parameter , 输入类型是文字.
-
-		String gsonUrl = "http://"+callbackIp+":18122/reportInputType/?"+MapUtils.toUrlGetString(map); //The gson request string.最新版本号。
-
-		GsonRequest<WebServiceResponse> gsonRequest=new GsonRequest<WebServiceResponse>
-		(
-				com.android.volley.Request.Method.GET,
-				gsonUrl,
-			WebServiceResponse.class,
-			new Response.Listener<WebServiceResponse>() {
-				public void onResponse(WebServiceResponse response) {
-
-					parseSubmitPasswordResponse(response); //解析请求结果。
-				}
-			},
-			new Response.ErrorListener()
-			{
-				@Override
-				public void onErrorResponse(VolleyError error)
-				{
-					Log.e(TAG,error.getMessage(),error);
-				} //public void onErrorResponse(VolleyError error)
-			} //new Response.ErrorListener()
-			);
-
-			mQueue.add(gsonRequest); //添加请求。
-	} //private void reportInputtingNormalText()
-	
-	/**
-	 * 解析提交密码信息的结果。
-	 * @param weatherInfo 结果对象。
-	 */
-	protected void parseSubmitPasswordResponse(WebServiceResponse weatherInfo) 
-	{
-		if (weatherInfo.isSuccess()) //请求成功了。
-		{
-		} //if (weatherInfo.isSuccess()) //请求成功了。
-		else //服务器返回结果为失败。
-		{
-		} //else //服务器返回结果为失败。
-	} //protected void parseSubmitPasswordResponse(PhoneRegisterResponse weatherInfo)
-
-
-	/**
-	 * 报告正在输入密码。
-	 */
-	private void reportInputtingPassword() 
-	{
-		Map<String,String> map = new HashMap<String, String>();
-
-		map.put("inputType", "password"); //Add the parameter , 输入类型是密码.
-
-		String gsonUrl = "http://"+callbackIp+":18122/reportInputType/?"+MapUtils.toUrlGetString(map); //The gson request string.最新版本号。
-		
-		Log.d(TAG,"reportInputtingPassword,gsonUrl:"+gsonUrl); //Debug.
-		
-		GsonRequest<WebServiceResponse> gsonRequest=new GsonRequest<WebServiceResponse>
-		(
-				com.android.volley.Request.Method.GET,
-				gsonUrl,
-			WebServiceResponse.class,
-			new Response.Listener<WebServiceResponse>() 
-			{
-				public void onResponse(WebServiceResponse response) 
-				{
-
-					parseSubmitPasswordResponse(response); //解析请求结果。
-				}
-			},
-			new Response.ErrorListener() 
-			{
-				@Override
-				public void onErrorResponse(VolleyError error) 
-				{
-					Log.e(TAG,error.getMessage(),error);
-				} //public void onErrorResponse(VolleyError error)
-			} //new Response.ErrorListener()
-			);
-		
-		mQueue.add(gsonRequest); //添加请求。
-
-
-	} //private void reportInputtingPassword()
 
 	/**
 	 * 是否正在输入密码。
