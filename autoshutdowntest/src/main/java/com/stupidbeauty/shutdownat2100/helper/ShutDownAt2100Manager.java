@@ -19,7 +19,7 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
+// import android.support.v4.content.LocalBroadcastManager;
 import android.text.InputType;
 import android.text.method.MetaKeyKeyListener;
 import android.util.Log;
@@ -32,37 +32,20 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
 import com.stupidbeauty.shutdownat2100.helper.ShutDownAt2100Manager;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+// import com.android.volley.RequestQueue;
+// import com.android.volley.Response;
+// import com.android.volley.VolleyError;
 import com.google.protobuf.InvalidProtocolBufferException;
-// import com.google.zxing.client.android.CaptureActivity;
 import com.koushikdutta.async.http.server.AsyncHttpServer;
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 import com.koushikdutta.async.http.server.AsyncHttpServerResponse;
 import com.koushikdutta.async.http.server.HttpServerRequestCallback;
-// import com.stupidbeauty.exist.ExistMessageContainer;
-// import com.stupidbeauty.exist.ServicePublisher;
-// import com.stupidbeauty.lanime.callback.ClipboardTextCallback;
-// import com.stupidbeauty.lanime.callback.CommitControlCharacterCallback;
-// import com.stupidbeauty.lanime.callback.CommitTextCallback;
-// import com.stupidbeauty.lanime.callback.HideKeyboardCallback;
-// import com.stupidbeauty.lanime.callback.PhoneAvatarCallback;
-// import com.stupidbeauty.lanime.callback.PhoneInformationCallback;
-// import com.stupidbeauty.lanime.network.volley.GsonRequest;
-// import com.stupidbeauty.lanime.network.volley.MapUtils;
-// import com.stupidbeauty.lanime.network.volley.VolleyManager;
-// import com.stupidbeauty.lanime.network.volley.WebServiceResponse;
 import com.stupidbeauty.shutdownat2100.AmqpMessage;
 import com.stupidbeauty.shutdownat2100.Sda2FunctionName;
 import com.stupidbeauty.shutdownat2100.Sda2Message;
 import com.stupidbeauty.shutdownat2100.ShutDownAt2100ConfigurationMessage;
 import com.stupidbeauty.shutdownat2100androidnative.PreferenceManagerUtil;
-// import com.stupidbeauty.shutdownat2100.helper.StopUsingPhoneActivity;
-//import com.stupidbeauty.wakeup.Waker;
-
 import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -124,8 +107,6 @@ public class ShutDownAt2100Manager
   private String mWordSeparators; //!<单词分隔符集合字符串。
 
   protected String callbackIp="127.0.0.1"; //!<回调的IP。
-  private RequestQueue mQueue; //!<Volley请求队列。
-
   protected Set<Long> committedTransactionIdSet=new HashSet<Long>(); //!<已提交的事务编号集合。
 	
   /**
@@ -217,9 +198,12 @@ public class ShutDownAt2100Manager
       } //try //尝试读取内容
       catch (IOException e) //文件不存在
       {
-        shutDownHour=PreferenceManagerUtil.getShutdownHour(context);
-        shutDownMinute=PreferenceManagerUtil.getShutdownMinute(context);
-
+        if (context!=null)
+        {
+          shutDownHour=PreferenceManagerUtil.getShutdownHour(context);
+          shutDownMinute=PreferenceManagerUtil.getShutdownMinute(context);
+        } // if (context!=null)
+      
         e.printStackTrace();
       } //catch (IOException e) //文件不存在
 	} //private void loadShutDownAt2100Configuration()

@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 
 // import com.stupidbeauty.lanime.QueueMateStoreApplication;
 
-@SuppressWarnings("WeakerAccess")
 public class PreferenceManagerUtil {
 
 	/**

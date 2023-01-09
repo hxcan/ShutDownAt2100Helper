@@ -1,2 +1,4 @@
 .gradle/
 autoshutdowntest/build/
+autoshutdowntest/.exzignore
+local.properties
