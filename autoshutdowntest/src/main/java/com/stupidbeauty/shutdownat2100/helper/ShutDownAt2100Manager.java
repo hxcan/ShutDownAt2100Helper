@@ -68,19 +68,8 @@ public class ShutDownAt2100Manager
   private ShutDownAt2100Manager shutDownAt2100Manager; //!< Shut down at 2100 manager.
   private int shutDownHour=-1; //!<关机小时数。
   private int shutDownMinute=-1; //!<关机分钟数。
-
+  private long lastCheckShutDownTimeMilliseconds=0; //!< The time stamp of last time doing the check.
   private boolean exceededShutDownTime=false; //!<是否已经超过了关机时间。
-
-  /**
-    * This boolean indicates the optional example code for performing
-    * processing of hard keys in addition to regular text generation
-    * from on-screen interaction.  It would be used for input methods that
-    * perform language translations (such as converting text entered on 
-    * a QWERTY keyboard to Chinese), but may not be used for input methods
-    * that are primarily intended to be used for on-screen text entry.
-    */
-  static final boolean PROCESS_HARD_KEYS = true;
-
   private static final String TAG = "SoftKeyboard"; //!<输出调试信息时使用的标记。
 
   private static final String LanServiceProtocolType = "HTTP"; //!< 服务协议类型是HTTP。
@@ -213,14 +202,22 @@ public class ShutDownAt2100Manager
 	 */
 	public void checkShutDownTime()
 	{
-      //是否超过了关机时间。
+    //是否超过了关机时间。
 
+    long now = System.currentTimeMillis();
+
+    if ((now-lastCheckShutDownTimeMilliseconds)>=(1*60*1000)) // only check once every minute
+    {
       checkWhetherExceededShutDownTime(); //检查，是否超过了关机时间。
 
-      if (exceededShutDownTime) //是超过了关机时间。
+      lastCheckShutDownTimeMilliseconds=now;
+
+      if (exceededShutDownTime) // 是超过了关机时间。
       {
         executeShutDown(); //执行关机过程。
+        lastCheckShutDownTimeMilliseconds=0; // reset the time stamp for frequent check later.
       } //if (exceededShutDownTime) //是超过了关机时间。
+    } // if ((now-lastCheckShutDownTimeMilliseconds)>=(1*60*1000)) // only check once every minute
 	} //private void checkShutDownTime()
 
 	/**
@@ -254,12 +251,11 @@ public class ShutDownAt2100Manager
 	 */
 	private void checkWhetherExceededShutDownTime()
 	{
-	    Log.d(TAG, "checkWhetherExceededShutDownTime, shut down time: " + shutDownHour + ", " + shutDownMinute); //Debug.
+    Log.d(TAG, "checkWhetherExceededShutDownTime, shut down time: " + shutDownHour + ", " + shutDownMinute); //Debug.
 
 		if (shutDownHour>=0) //载入了有效的关机时间。
 		{
 			GregorianCalendar t=new GregorianCalendar(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
-
 
 			GregorianCalendar thresholdTime=new GregorianCalendar(t.get(GregorianCalendar.YEAR),t.get(GregorianCalendar.MONTH),t.get(GregorianCalendar.DATE),shutDownHour,shutDownMinute); //阈值时间。
 
@@ -267,13 +263,8 @@ public class ShutDownAt2100Manager
 			{
 				exceededShutDownTime=true;
 			} //if (t.after(thresholdTime)) //时间比阈值时间还要晚。
-
 		} //if (shutDownHour>=0) //载入了有效的关机时间。
-
-
-
 	} //private void checkWhetherExceededShutDownTime()
-
 
 	/**
 	 * 是否正在输入密码。
