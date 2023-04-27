@@ -19,7 +19,11 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-// import android.support.v4.content.LocalBroadcastManager;
+import com.upokecenter.cbor.CBORObject;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
+import java.io.ByteArrayOutputStream;
 import android.text.InputType;
 import android.text.method.MetaKeyKeyListener;
 import android.util.Log;
@@ -40,7 +44,7 @@ import com.koushikdutta.async.http.server.AsyncHttpServer;
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 import com.koushikdutta.async.http.server.AsyncHttpServerResponse;
 import com.koushikdutta.async.http.server.HttpServerRequestCallback;
-import com.stupidbeauty.shutdownat2100.AmqpMessage;
+// import com.stupidbeauty.shutdownat2100.AmqpMessage;
 import com.stupidbeauty.shutdownat2100.Sda2FunctionName;
 import com.stupidbeauty.shutdownat2100.Sda2Message;
 import com.stupidbeauty.shutdownat2100.ShutDownAt2100ConfigurationMessage;
@@ -98,6 +102,51 @@ public class ShutDownAt2100Manager
   protected String callbackIp="127.0.0.1"; //!<回调的IP。
   protected Set<Long> committedTransactionIdSet=new HashSet<Long>(); //!<已提交的事务编号集合。
 	
+	/**
+	 * 写入关机时间到外置存储。
+	 * @param clock_time 关机的小时数。
+	 * @param ClkMnt 关机的分钟数。
+	 */
+	public void writeShutDownTimeToExternalStorage(int clock_time, int ClkMnt)
+	{
+    Log.d(TAG, "writeShutDownTimeToExternalStorage, shut down time: "+ clock_time + ", " + ClkMnt); //Debug.
+
+    Sda2Message translateRequestBuilder = new Sda2Message(); //创建消息构造器。
+    ShutDownAt2100ConfigurationMessage shutDownAt2100ConfigurationBuilder=new ShutDownAt2100ConfigurationMessage (); //创建构造器。
+
+		shutDownAt2100ConfigurationBuilder.setHour(clock_time); //设置小时数。
+		shutDownAt2100ConfigurationBuilder.setMinute(ClkMnt); // Set minute.
+
+		translateRequestBuilder.setFunctionName(Sda2FunctionName.ShutDownAt2100Configuration); //设置函数名字，配置文件。
+
+		translateRequestBuilder.setShutDownAt2100ConfigurationMessage(shutDownAt2100ConfigurationBuilder); //设置关机消息。
+
+		// final byte[] messageContent=translateRequestBuilder.build().toByteArray();//序列化成字节数组。
+
+    CBORObject cborObject= CBORObject.FromObject(translateRequestBuilder); //创建对象
+
+    byte[] messageContent=cborObject.EncodeToBytes();
+
+    // String arrayString=new String(array);
+
+		
+		//写入文件：
+		File goddessCameraDirectory=new File(Constants.DirPath.FARMING_BOOK_APP_SD_CARD_PATH); //女神相机目录。
+
+		goddessCameraDirectory.mkdirs(); //创建目录。
+
+		File configurationFile=new File(goddessCameraDirectory, "shutdownat2100.oot"); //配置文件对象。
+
+		try
+		{
+			FileUtils.writeByteArrayToFile(configurationFile, messageContent); //写入到文件中去。
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	} //private void writeShutDownTimeToExternalStorage(int clock_time, int ClkMnt)
+
   /**
   * Constructor.
   */
@@ -174,12 +223,12 @@ public class ShutDownAt2100Manager
 
         ShutDownAt2100ConfigurationMessage commitTextMessage=amqpMessage.getShutDownAt2100ConfigurationMessage(); //获取提交文字消息。
 
-        Sda2FunctionName functionName=amqpMessage.getFunctionName(); //
+        // Sda2FunctionName functionName=amqpMessage.getFunctionName(); //
 
         //获取关机小时数。
         shutDownHour = commitTextMessage.getHour();
         //获取关机分钟数。
-        shutDownMinute = commitTextMessage.getMiniute();
+        shutDownMinute = commitTextMessage.getMinute();
 
 
         PreferenceManagerUtil.setShutdownHour(shutDownHour,context);
