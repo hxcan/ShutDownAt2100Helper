@@ -15,7 +15,7 @@ public class Sda2FunctionName
    *
    * <code>RememberMe = 0;</code>
    */
-  public static int RememberMe=0;
+  public static final int RememberMe=0;
   /**
    * <pre>
    *检查时间。

@@ -51,11 +51,6 @@ public  final class ShutDownAt2100ConfigurationMessage
     return result;
   } // public ShutDownAt2100ConfigurationMessage parseFrom(CBORObject versionNameObject)
 
-  public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
-    return com.stupidbeauty.shutdownat2100.ShutDownAt2100ConfigurationMessageProtos.internal_static_com_stupidbeauty_shutdownat2100_ShutDownAt2100ConfigurationMessage_descriptor;
-  }
-
   public static final int HOUR_FIELD_NUMBER = 1;
   private int hour_;
   /**

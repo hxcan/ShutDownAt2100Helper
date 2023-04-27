@@ -97,11 +97,6 @@ public  final class Sda2Message
     this.shutDownAt2100ConfigurationMessage_=shutDownAt2100ConfigurationBuilder; // Remember.
   } // public void setShutDownAt2100ConfigurationMessage(ShutDownAt2100ConfigurationMessage shutDownAt2100ConfigurationBuilder)
 
-  public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
-    return com.stupidbeauty.shutdownat2100.Sda2MessageProtos.internal_static_com_stupidbeauty_shutdownat2100_Sda2Message_descriptor;
-  }
-
   public static final int FUNCTIONNAME_FIELD_NUMBER = 1;
   private int functionName_;
   /**
