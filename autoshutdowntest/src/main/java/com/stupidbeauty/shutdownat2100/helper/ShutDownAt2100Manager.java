@@ -221,29 +221,29 @@ public class ShutDownAt2100Manager
 	} //private void checkShutDownTime()
 
 	/**
-	 * 执行关机过程。
+	 * Execute shutdown. Or equivalent operations.
 	 */
-	private void executeShutDown()
+	public void executeShutDown()
 	{
-      Intent launchIntent=new Intent(); //获取当前软件包的启动意图。
-      launchIntent.setAction(Intent.ACTION_MAIN); //设置动作。
+    Intent launchIntent=new Intent(); //获取当前软件包的启动意图。
+    launchIntent.setAction(Intent.ACTION_MAIN); //设置动作。
 
-      String packageName="com.stupidbeauty.shutdownat2100androidnative"; //21点关机。
-      String serviceName="com.stupidbeauty.shutdownat2100androidnative.StopUsingPhoneActivity"; //21点关机。
+    String packageName="com.stupidbeauty.shutdownat2100androidnative"; //21点关机。
+    String serviceName="com.stupidbeauty.shutdownat2100androidnative.StopUsingPhoneActivity"; //21点关机。
 
-      ComponentName cn = new ComponentName(packageName, serviceName);
-      launchIntent.setComponent(cn);
+    ComponentName cn = new ComponentName(packageName, serviceName);
+    launchIntent.setComponent(cn);
 
-      launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //设置标志位。
+    launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //设置标志位。
 
-      try
-      {
-        context.startActivity(launchIntent); // 启动 stop using phone 窗口。
-      } //
-      catch (ActivityNotFoundException e)
-      {
-        e.printStackTrace();
-      } //catch (ActivityNotFoundException e)
+    try
+    {
+      context.startActivity(launchIntent); // 启动 stop using phone 窗口。
+    } //
+    catch (ActivityNotFoundException e)
+    {
+      e.printStackTrace();
+    } //catch (ActivityNotFoundException e)
 	} //private void executeShutDown()
 
 	/**
