@@ -332,6 +332,14 @@ public class ShutDownAt2100Manager
 			} //if (t.after(thresholdTime)) //时间比阈值时间还要晚。
 		} //if (shutDownHour>=0) //载入了有效的关机时间。
 	} //private void checkWhetherExceededShutDownTime()
+	
+	/**
+	* Get the status of whether exceeded the shut down time.
+	*/
+	public boolean getExceededShutDownTime() 
+	{
+    return exceededShutDownTime;
+	} // public boolean getExceededShutDownTime()
 
 	/**
 	 * 是否正在输入密码。
