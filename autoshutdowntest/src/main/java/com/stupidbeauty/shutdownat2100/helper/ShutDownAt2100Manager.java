@@ -73,7 +73,7 @@ public class ShutDownAt2100Manager
   private int shutDownHour=-1; //!<关机小时数。
   private int shutDownMinute=-1; //!<关机分钟数。
   private long lastCheckShutDownTimeMilliseconds=0; //!< The time stamp of last time doing the check.
-  private boolean exceededShutDownTime=false; //!<是否已经超过了关机时间。
+  private boolean exceededShutDownTime=false; //!< If we have exceeded the shut down time.
   private static final String TAG = "SoftKeyboard"; //!<输出调试信息时使用的标记。
 
   private static final String LanServiceProtocolType = "HTTP"; //!< 服务协议类型是HTTP。
@@ -245,6 +245,16 @@ public class ShutDownAt2100Manager
         e.printStackTrace();
       } //catch (IOException e) //文件不存在
 	} //private void loadShutDownAt2100Configuration()
+	
+	/**
+	* Check , if installed shut down at 2100 ever.
+	*/
+	public boolean getEverInstalledShutDownAt2100()
+	{
+    boolean shutDownHour=PreferenceManagerUtil.getEverInstalledShutDownAt2100(context);
+    
+    return shutDownHour;
+	} // public boolean getEverInstalledShutDownAt2100()
 
 	/**
 	 * 检查关机时间。

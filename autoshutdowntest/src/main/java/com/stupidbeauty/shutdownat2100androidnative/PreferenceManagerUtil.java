@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-// import com.stupidbeauty.lanime.QueueMateStoreApplication;
-
-public class PreferenceManagerUtil {
-
+public class PreferenceManagerUtil 
+{
 	/**
 	 * 保存客户端编号。
 	 * @param clientId 要保存的客户端编号。
@@ -18,6 +16,13 @@ public class PreferenceManagerUtil {
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ct); //获取共享配置对象。
       sp.edit().putInt(Constants.Common.SHUTDOWN_HOUR, clientId).apply(); //保存。
 	} //public static void set
+	
+	public static boolean getEverInstalledShutDownAt2100(Context context)
+	{
+    Context ct = context; // 获取应用程序上下文。
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ct); //获取默认共享配置对象。
+    return sp.getBoolean(Constants.Common.EverInstalledShutDownAt2100, false);
+	} // public static boolean getEverInstalledShutDownAt2100(Context context)
 
     /**
      * 获取关机时间的小时数。
