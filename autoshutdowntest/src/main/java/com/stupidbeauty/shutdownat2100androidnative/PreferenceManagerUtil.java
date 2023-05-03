@@ -17,6 +17,14 @@ public class PreferenceManagerUtil
       sp.edit().putInt(Constants.Common.SHUTDOWN_HOUR, clientId).apply(); //保存。
 	} //public static void set
 	
+	public static void setEverInstalledShutDownAt2100(Context context)
+	{
+    boolean clientId=true;
+    Context ct = context; // 获取应用程序上下文。
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ct); //获取共享配置对象。
+    sp.edit().putBoolean(Constants.Common.EverInstalledShutDownAt2100, clientId).apply(); // Commit.
+	} // public void setEverInstalledShutDownAt2100()
+	
 	public static boolean getEverInstalledShutDownAt2100(Context context)
 	{
     Context ct = context; // 获取应用程序上下文。

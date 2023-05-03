@@ -247,6 +247,14 @@ public class ShutDownAt2100Manager
 	} //private void loadShutDownAt2100Configuration()
 	
 	/**
+	*  Remember , ever installed shut down at 2100.
+	*/
+	public void setEverInstalledShutDownAt2100()
+	{
+    PreferenceManagerUtil.setEverInstalledShutDownAt2100(context);
+	} // public void setEverInstalledShutDownAt2100()
+	
+	/**
 	* Check , if installed shut down at 2100 ever.
 	*/
 	public boolean getEverInstalledShutDownAt2100()
