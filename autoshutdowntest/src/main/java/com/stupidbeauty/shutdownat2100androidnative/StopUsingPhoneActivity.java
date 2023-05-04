@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 import com.stupidbeauty.shutdownat2100.helper.R2;
+import com.stupidbeauty.shutdownat2100.helper.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,7 +40,7 @@ public class StopUsingPhoneActivity extends Activity
       getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
-    setContentView(R2.layout.stop_using_phone_activity); // Set the content view.
+    setContentView(R.layout.stop_using_phone_activity); // Set the content view.
 
     ButterKnife.bind(this); //视图注入。
 
