@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">autoshutdowntest</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
+  <string name="app_name">autoshutdowntest</string>
+  <string name="hello_world">Hello world!</string>
+  <string name="action_settings">Settings</string>
+  <string name="dialer">Dialer</string>
+  <string name="itsNotGoodForYourPhone">It\'s not good for your phone</string>
+  <string name="stopUsingPhone">Stop using phone</string>
+  <string name="darkBackgroundImage">Dark the background image</string>
+  <string name="backgroundImage">Background image</string>
 </resources>

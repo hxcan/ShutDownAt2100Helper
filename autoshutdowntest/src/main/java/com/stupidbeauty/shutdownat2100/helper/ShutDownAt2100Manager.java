@@ -286,16 +286,26 @@ public class ShutDownAt2100Manager
       } //if (exceededShutDownTime) //是超过了关机时间。
     } // if ((now-lastCheckShutDownTimeMilliseconds)>=(1*60*1000)) // only check once every minute
 	} //private void checkShutDownTime()
+	
+	/**
+	* Execute fall back shut down.
+	*/
+	public void executeFallBackShutDown()
+	{
+    // Chen xin.
+    String packageName=context.getPackageName(); // the package name of calling application.
+    executeShutDown(packageName);
+	} // public void executeFallBackShutDown()
 
 	/**
 	 * Execute shutdown. Or equivalent operations.
 	 */
-	public void executeShutDown()
+	public void executeShutDown(String packageName)
 	{
     Intent launchIntent=new Intent(); //获取当前软件包的启动意图。
     launchIntent.setAction(Intent.ACTION_MAIN); //设置动作。
 
-    String packageName="com.stupidbeauty.shutdownat2100androidnative"; //21点关机。
+    // String packageName="com.stupidbeauty.shutdownat2100androidnative"; //21点关机。
     String serviceName="com.stupidbeauty.shutdownat2100androidnative.StopUsingPhoneActivity"; //21点关机。
 
     ComponentName cn = new ComponentName(packageName, serviceName);
@@ -311,6 +321,35 @@ public class ShutDownAt2100Manager
     {
       e.printStackTrace();
     } //catch (ActivityNotFoundException e)
+	} //private void executeShutDown()
+
+	/**
+	 * Execute shutdown. Or equivalent operations.
+	 */
+	public void executeShutDown()
+	{
+    // Intent launchIntent=new Intent(); //获取当前软件包的启动意图。
+    // launchIntent.setAction(Intent.ACTION_MAIN); //设置动作。
+
+    String packageName="com.stupidbeauty.shutdownat2100androidnative"; // the package name of shut down at 2100.
+    
+    executeShutDown(packageName);
+    
+    // String serviceName="com.stupidbeauty.shutdownat2100androidnative.StopUsingPhoneActivity"; //21点关机。
+    // 
+    // ComponentName cn = new ComponentName(packageName, serviceName);
+    // launchIntent.setComponent(cn);
+    // 
+    // launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //设置标志位。
+
+    // try
+    // {
+    //   context.startActivity(launchIntent); // 启动 stop using phone 窗口。
+    // } //
+    // catch (ActivityNotFoundException e)
+    // {
+    //   e.printStackTrace();
+    // } //catch (ActivityNotFoundException e)
 	} //private void executeShutDown()
 
 	/**
