@@ -369,6 +369,10 @@ public class ShutDownAt2100Manager
 			{
 				exceededShutDownTime=true;
 			} //if (t.after(thresholdTime)) //时间比阈值时间还要晚。
+			else // not exceeded
+			{
+				exceededShutDownTime=false;
+			} // else // not exceeded
 		} //if (shutDownHour>=0) //载入了有效的关机时间。
 	} //private void checkWhetherExceededShutDownTime()
 	
