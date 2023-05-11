@@ -1,5 +1,10 @@
 package com.stupidbeauty.shutdownat2100androidnative;
 
+import com.stupidbeauty.shutdownat2100.helper.ShutDownAt2100Manager;
+// import com.stupidbeauty.hxlauncher.manager.ActiveUserReportManager;
+import android.os.Debug;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -19,9 +24,30 @@ import butterknife.OnClick;
 public class StopUsingPhoneActivity extends Activity
 {
   private static final int PERMISSIONS_REQUEST = 1;
-
+  private ShutDownAt2100Manager shutDownAt2100Manager= null; //!< Shutdown at 2100 manager.
   private static final String PERMISSION_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
   private static final String PERMISSION_RECORD_AUDIO = Manifest.permission.RECORD_AUDIO; //!<录音权限。
+
+	@Override
+	/**
+	 * The activity is being resumed.
+	 */
+	protected void onResume()
+	{
+    super.onResume(); //超类继续工作。
+
+    // showAlreadySetShutdownTime(); //显示已经设置的关机时间。
+    shutDownAt2100Manager.checkShutDownTime(); // Check shut down time.
+    boolean shouldShutDown=shutDownAt2100Manager.getExceededShutDownTime(); // Check shut down time.
+
+    if (shouldShutDown) // Should shut down
+    {
+    } // if (shouldShutDown) // Should shut down
+    else // should not shut down
+    {
+      finish(); // just finish.
+    } // else // should not shut down
+	} //protected void onCreate(Bundle savedInstanceState)
 
   @Override
   /**
@@ -44,6 +70,7 @@ public class StopUsingPhoneActivity extends Activity
 
     ButterKnife.bind(this); //视图注入。
 
+    shutDownAt2100Manager=new ShutDownAt2100Manager(this);
     checkPermission(); //检查权限。
   } //protected void onCreate(Bundle savedInstanceState)
 

@@ -1,5 +1,10 @@
 package com.stupidbeauty.shutdownat2100.helper;
 
+import com.stupidbeauty.codeposition.CodePosition;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.BufferedReader;
+import com.stupidbeauty.shutdownat2100.helper.ShutDownAt2100Manager;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -302,6 +307,7 @@ public class ShutDownAt2100Manager
 	 */
 	public void executeShutDown(String packageName)
 	{
+    Log.d(TAG, CodePosition.newInstance().toString()+ ", package name: "+ packageName + ", exceeded: " + exceededShutDownTime + ", shut down hour: " + shutDownHour + ", shut down minute: " + shutDownMinute); // Debug.
     Intent launchIntent=new Intent(); //获取当前软件包的启动意图。
     launchIntent.setAction(Intent.ACTION_MAIN); //设置动作。
 
