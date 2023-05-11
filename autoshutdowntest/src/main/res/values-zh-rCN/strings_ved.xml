@@ -8,4 +8,5 @@
   <string name="stopUsingPhone">停止使用手机</string>
   <string name="darkBackgroundImage">背景颜色变暗</string>
   <string name="backgroundImage">背景图片</string>
+  <string name="floatingWindowr">悬浮窗</string>
 </resources>
