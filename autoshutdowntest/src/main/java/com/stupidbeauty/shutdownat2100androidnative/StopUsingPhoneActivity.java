@@ -46,9 +46,10 @@ public class StopUsingPhoneActivity extends Activity
     super.onResume(); //超类继续工作。
 
     // showAlreadySetShutdownTime(); //显示已经设置的关机时间。
+    Log.d(TAG, CodePosition.newInstance().toString()+ ", checking: "+ ", package: " + getPackageName()); // Debug.
     shutDownAt2100Manager.checkShutDownTime(); // Check shut down time.
     boolean shouldShutDown=shutDownAt2100Manager.getExceededShutDownTime(); // Check shut down time.
-    Log.d(TAG, CodePosition.newInstance().toString()+ ", exceeded: "+ shouldShutDown); // Debug.
+    Log.d(TAG, CodePosition.newInstance().toString()+ ", exceeded: "+ shouldShutDown + ", package: " + getPackageName()); // Debug.
 
     if (shouldShutDown) // Should shut down
     {

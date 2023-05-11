@@ -79,7 +79,7 @@ public class ShutDownAt2100Manager
   private int shutDownMinute=-1; //!<关机分钟数。
   private long lastCheckShutDownTimeMilliseconds=0; //!< The time stamp of last time doing the check.
   private boolean exceededShutDownTime=false; //!< If we have exceeded the shut down time.
-  private static final String TAG = "SoftKeyboard"; //!<输出调试信息时使用的标记。
+  private static final String TAG = "ShutDownAt2100Manager"; //!< The tag used for debug code.
 
   private static final String LanServiceProtocolType = "HTTP"; //!< 服务协议类型是HTTP。
 
@@ -380,6 +380,10 @@ public class ShutDownAt2100Manager
 	 */
 	private void checkWhetherExceededShutDownTime()
 	{
+    Log.d(TAG, "checkWhetherExceededShutDownTime, shut down time: " + shutDownHour + ", " + shutDownMinute); //Debug.
+    
+    loadShutDownAt2100Configuration(); //载入21点关机的配置信息。
+
     Log.d(TAG, "checkWhetherExceededShutDownTime, shut down time: " + shutDownHour + ", " + shutDownMinute); //Debug.
 
 		if (shutDownHour>=0) //载入了有效的关机时间。
