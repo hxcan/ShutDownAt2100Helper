@@ -275,11 +275,28 @@ public class ShutDownAt2100Manager
 	public void checkShutDownTime()
 	{
     //是否超过了关机时间。
-
+    boolean shouldCheck=false;
     long now = System.currentTimeMillis();
-
-    if ((now-lastCheckShutDownTimeMilliseconds)>=(1*60*1000)) // only check once every minute
+    String packageName=context.getPackageName(); // Get the packag ename.
+    
+    Log.d(TAG, CodePosition.newInstance().toString()+ ", package name: "+ packageName + ", exceeded: " + exceededShutDownTime + ", shut down hour: " + shutDownHour + ", shut down minute: " + shutDownMinute); // Debug.
+    if (exceededShutDownTime) // Already exceeded
     {
+      shouldCheck=true;
+    } // if (exceededShutDownTime) // Already exceeded
+    else // not exceeded
+    {
+      Log.d(TAG, CodePosition.newInstance().toString()+ ", package name: "+ packageName + ", exceeded: " + exceededShutDownTime + ", shut down hour: " + shutDownHour + ", shut down minute: " + shutDownMinute); // Debug.
+      if ((now-lastCheckShutDownTimeMilliseconds)>=(1*60*1000)) // only check once every minute
+      {
+        shouldCheck=true; // Should check.
+        Log.d(TAG, CodePosition.newInstance().toString()+ ", package name: "+ packageName + ", exceeded: " + exceededShutDownTime + ", shut down hour: " + shutDownHour + ", shut down minute: " + shutDownMinute); // Debug.
+      } // if ((now-lastCheckShutDownTimeMilliseconds)>=(1*60*1000)) // only check once every minute
+    } // else // not exceeded
+
+    if (shouldCheck) // Should check.
+    {
+      Log.d(TAG, CodePosition.newInstance().toString()+ ", package name: "+ packageName + ", exceeded: " + exceededShutDownTime + ", shut down hour: " + shutDownHour + ", shut down minute: " + shutDownMinute); // Debug.
       checkWhetherExceededShutDownTime(); //检查，是否超过了关机时间。
 
       lastCheckShutDownTimeMilliseconds=now;

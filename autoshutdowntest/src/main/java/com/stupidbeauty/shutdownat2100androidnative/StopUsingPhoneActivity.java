@@ -1,7 +1,15 @@
 package com.stupidbeauty.shutdownat2100androidnative;
 
 import com.stupidbeauty.shutdownat2100.helper.ShutDownAt2100Manager;
-// import com.stupidbeauty.hxlauncher.manager.ActiveUserReportManager;
+import android.util.Log;
+import android.view.Window;
+import android.widget.TimePicker;
+import android.widget.Toast;
+import com.stupidbeauty.codeposition.CodePosition;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.BufferedReader;
+import com.stupidbeauty.shutdownat2100.helper.ShutDownAt2100Manager;
 import android.os.Debug;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -27,6 +35,7 @@ public class StopUsingPhoneActivity extends Activity
   private ShutDownAt2100Manager shutDownAt2100Manager= null; //!< Shutdown at 2100 manager.
   private static final String PERMISSION_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
   private static final String PERMISSION_RECORD_AUDIO = Manifest.permission.RECORD_AUDIO; //!<录音权限。
+  private static final String TAG="StopUsingPhoneActivity"; //!< The tag used for debug code.
 
 	@Override
 	/**
@@ -39,12 +48,14 @@ public class StopUsingPhoneActivity extends Activity
     // showAlreadySetShutdownTime(); //显示已经设置的关机时间。
     shutDownAt2100Manager.checkShutDownTime(); // Check shut down time.
     boolean shouldShutDown=shutDownAt2100Manager.getExceededShutDownTime(); // Check shut down time.
+    Log.d(TAG, CodePosition.newInstance().toString()+ ", exceeded: "+ shouldShutDown); // Debug.
 
     if (shouldShutDown) // Should shut down
     {
     } // if (shouldShutDown) // Should shut down
     else // should not shut down
     {
+      Log.d(TAG, CodePosition.newInstance().toString()+ ", exceeded: "+ shouldShutDown + ", finishing"); // Debug.
       finish(); // just finish.
     } // else // should not shut down
 	} //protected void onCreate(Bundle savedInstanceState)
