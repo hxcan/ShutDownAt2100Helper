@@ -225,31 +225,46 @@ public class ShutDownAt2100Manager
         byte[] messageContent= FileUtils.readFileToByteArray(configurationFile); //读取内容。
 
         Sda2Message amqpMessage= Sda2Message.parseFrom(messageContent); //解析消息。
+        
+        if (amqpMessage!=null) // NOt null
+        {
+          ShutDownAt2100ConfigurationMessage commitTextMessage=amqpMessage.getShutDownAt2100ConfigurationMessage(); //获取提交文字消息。
 
-        ShutDownAt2100ConfigurationMessage commitTextMessage=amqpMessage.getShutDownAt2100ConfigurationMessage(); //获取提交文字消息。
+          // Sda2FunctionName functionName=amqpMessage.getFunctionName(); //
 
-        // Sda2FunctionName functionName=amqpMessage.getFunctionName(); //
-
-        //获取关机小时数。
-        shutDownHour = commitTextMessage.getHour();
-        //获取关机分钟数。
-        shutDownMinute = commitTextMessage.getMinute();
+          //获取关机小时数。
+          shutDownHour = commitTextMessage.getHour();
+          //获取关机分钟数。
+          shutDownMinute = commitTextMessage.getMinute();
 
 
-        PreferenceManagerUtil.setShutdownHour(shutDownHour,context);
-        PreferenceManagerUtil.setShutdownMinute(shutDownMinute,context);
+          PreferenceManagerUtil.setShutdownHour(shutDownHour,context);
+          PreferenceManagerUtil.setShutdownMinute(shutDownMinute,context);
+        } // if (amqpMessage!=null) // NOt null
+        else // load failed
+        {
+          readShutDownTimeFromPreference(); // Read from preference.
+        } // else // load failed
       } //try //尝试读取内容
       catch (IOException e) //文件不存在
       {
         if (context!=null)
         {
-          shutDownHour=PreferenceManagerUtil.getShutdownHour(context);
-          shutDownMinute=PreferenceManagerUtil.getShutdownMinute(context);
+          readShutDownTimeFromPreference(); // Read from preference.
         } // if (context!=null)
       
         e.printStackTrace();
       } //catch (IOException e) //文件不存在
 	} //private void loadShutDownAt2100Configuration()
+	
+	/**
+	* Read from preference.
+	*/
+  private void readShutDownTimeFromPreference()
+  {
+    shutDownHour=PreferenceManagerUtil.getShutdownHour(context);
+    shutDownMinute=PreferenceManagerUtil.getShutdownMinute(context);
+  } // private void readShutDownTimeFromPreference()
 	
 	/**
 	*  Remember , ever installed shut down at 2100.
