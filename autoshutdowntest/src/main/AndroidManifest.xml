@@ -6,4 +6,14 @@
   <uses-sdk
     android:minSdkVersion="8"
     android:targetSdkVersion="21" />
+  <application
+    android:allowBackup="true"
+    >
+    <activity
+      android:name="com.stupidbeauty.shutdownat2100androidnative.StopUsingPhoneActivity"
+      android:screenOrientation="portrait"
+      android:label="@string/stopUsingPhone" 
+      android:exported="true">
+    </activity>
+  </application>
 </manifest>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="hello_world">世界你好！</string>
+  <string name="action_settings">设置</string>
+  <string name="dialer">拨号器</string>
+  <string name="itsNotGoodForYourPhone">对手机不好</string>
+  <string name="stopUsingPhone">停止使用手机</string>
+  <string name="darkBackgroundImage">背景颜色变暗</string>
+  <string name="backgroundImage">背景图片</string>
+  <string name="floatingWindowr">悬浮窗</string>
+</resources>
