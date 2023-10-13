@@ -312,9 +312,9 @@ public class ShutDownAt2100Manager
     if (shouldCheck) // Should check.
     {
       Log.d(TAG, CodePosition.newInstance().toString()+ ", package name: "+ packageName + ", exceeded: " + exceededShutDownTime + ", shut down hour: " + shutDownHour + ", shut down minute: " + shutDownMinute); // Debug.
-      checkWhetherExceededShutDownTime(); //检查，是否超过了关机时间。
+      checkWhetherExceededShutDownTime(); // 检查，是否超过了关机时间。
 
-      lastCheckShutDownTimeMilliseconds=now;
+      lastCheckShutDownTimeMilliseconds = now;
 
       if (exceededShutDownTime) // 是超过了关机时间。
       {
@@ -406,8 +406,13 @@ public class ShutDownAt2100Manager
 			GregorianCalendar t=new GregorianCalendar(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
 
 			GregorianCalendar thresholdTime=new GregorianCalendar(t.get(GregorianCalendar.YEAR),t.get(GregorianCalendar.MONTH),t.get(GregorianCalendar.DATE),shutDownHour,shutDownMinute); //阈值时间。
+			
+			int powerUpHour = 7;
+			int powerUpMinute = 1;
+			
+			GregorianCalendar powerUpTime = new GregorianCalendar(t.get(GregorianCalendar.YEAR),t.get(GregorianCalendar.MONTH),t.get(GregorianCalendar.DATE), powerUpHour, powerUpMinute); // The time of power up.
 
-			if (t.after(thresholdTime)) //时间比阈值时间还要晚。
+			if (t.after(thresholdTime) || t.before(powerUpTime)) // Later than shutdown time, or earlier than power up time.
 			{
 				exceededShutDownTime=true;
 			} //if (t.after(thresholdTime)) //时间比阈值时间还要晚。
