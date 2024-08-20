@@ -37,24 +37,26 @@ public  final class ShutDownAt2100ConfigurationMessage
   */
   public static ShutDownAt2100ConfigurationMessage parseFrom(CBORObject videoStreamMessage)
   {
-    CBORObject hourObject = videoStreamMessage.get("hour");
     int voiceCommand = 21;
-    
-    if (hourObject!=null) // The hour object exists
-    {
-      voiceCommand = hourObject.AsInt32();
-    } // if (hourObject!=null) // The hour object exists
-    
-    
-    CBORObject minuteObject = videoStreamMessage.get("minute");
-    
-    
     int packageUrl = 0;
-    
-    if (minuteObject!=null) // The minute object exists
+
+    if (videoStreamMessage!=null) // The whole object exists
     {
-      packageUrl = minuteObject.AsInt32();
-    } // if (minuteObject!=null) // The minute object exists
+      CBORObject hourObject = videoStreamMessage.get("hour");
+      
+      if (hourObject!=null) // The hour object exists
+      {
+        voiceCommand = hourObject.AsInt32();
+      } // if (hourObject!=null) // The hour object exists
+      
+      CBORObject minuteObject = videoStreamMessage.get("minute");
+      
+      if (minuteObject!=null) // The minute object exists
+      {
+        packageUrl = minuteObject.AsInt32();
+      } // if (minuteObject!=null) // The minute object exists
+      
+    } // if (videoStreamMessage!=null) // The whole object exists
     
     ShutDownAt2100ConfigurationMessage result = new ShutDownAt2100ConfigurationMessage(); // Result;
     
