@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'maven-publish'
 
 version="2020.1.27"
 
@@ -31,6 +32,15 @@ android
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
+  
+  publishing
+  {
+    singleVariant('release')
+    {
+      withSourcesJar()
+    }
+  }
+
 }
 
 dependencies
@@ -67,3 +77,21 @@ tasks.withType(JavaCompile).configureEach {
         '--add-opens=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED',
     ]
 }
+
+afterEvaluate 
+{
+  publishing 
+  {
+    publications
+    {
+      release(MavenPublication)
+      {
+        from components.release
+        groupId = 'com.github.hxcan'
+        artifactId = 'ShutDownAt2100Helper'
+        version = '2024.8.22'
+      }
+    }
+  }
+}
+
