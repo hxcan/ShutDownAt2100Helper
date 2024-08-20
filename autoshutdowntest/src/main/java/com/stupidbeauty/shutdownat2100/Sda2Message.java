@@ -31,8 +31,16 @@ public  final class Sda2Message
       CBORObject videoStreamMessage= CBORObject.DecodeFromBytes(messageContent); //解析消息。
 
       int voiceCommand=videoStreamMessage.get("functionName").AsInt32();
+      
+      CBORObject timestampObject = videoStreamMessage.get("timeStamp");
+      long timestampeUrl = 0;
+      
+      if (timestampObject!=null) // The object exists
+      {
+        timestampeUrl = timestampObject.AsInt64();
+      } // if (timestampObject!=null) // The object exists
+      
       CBORObject versionNameObject=videoStreamMessage.get("shutDownAt2100ConfigurationMessage");
-      long packageUrl=videoStreamMessage.get("timeStamp").AsInt64();
       
       ShutDownAt2100ConfigurationMessage shutDownAt2100ConfigurationMessage=ShutDownAt2100ConfigurationMessage.parseFrom(versionNameObject); 
 
@@ -40,9 +48,9 @@ public  final class Sda2Message
       result=new Sda2Message(); // Result;
       result.setFunctionName(voiceCommand);
       result.setShutDownAt2100ConfigurationMessage(shutDownAt2100ConfigurationMessage);
-      result.setTimeStamp(packageUrl);
+      result.setTimeStamp(timestampeUrl);
     
-    }
+    } // try
     catch (CBORException e)
     {
       e.printStackTrace();

@@ -7,14 +7,32 @@ import android.preference.PreferenceManager;
 public class PreferenceManagerUtil 
 {
 	/**
+	 * SEt last notification time.
+	 * @param clientId last notification time.
+	 */
+	public static void setLastNotificationTime(long clientId, Context context)
+	{
+    Context ct = context; // 获取应用程序上下文。
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ct); //获取共享配置对象。
+    sp.edit().putLong(Constants.Common.LastNotificationTime, clientId).apply(); //保存。
+	} //public static void set
+	
+	public static long getLastNotificationTime(Context context)
+	{
+    Context ct = context; // 获取应用程序上下文。
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ct); //获取默认共享配置对象。
+    return sp.getLong(Constants.Common.LastNotificationTime, 0);
+	} // public static boolean getEverInstalledShutDownAt2100(Context context)
+
+	/**
 	 * 保存客户端编号。
 	 * @param clientId 要保存的客户端编号。
 	 */
 	public static void setShutdownHour(int clientId, Context context)
 	{
-      Context ct = context; // 获取应用程序上下文。
-      SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ct); //获取共享配置对象。
-      sp.edit().putInt(Constants.Common.SHUTDOWN_HOUR, clientId).apply(); //保存。
+    Context ct = context; // 获取应用程序上下文。
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ct); //获取共享配置对象。
+    sp.edit().putInt(Constants.Common.SHUTDOWN_HOUR, clientId).apply(); //保存。
 	} //public static void set
 	
 	public static void setEverInstalledShutDownAt2100(Context context)

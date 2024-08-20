@@ -6,6 +6,7 @@ version="2020.1.27"
 android 
 {
   compileSdkVersion 29
+  namespace 'com.stupidbeauty.shutdownat2100.helper'
 
   defaultConfig 
   {

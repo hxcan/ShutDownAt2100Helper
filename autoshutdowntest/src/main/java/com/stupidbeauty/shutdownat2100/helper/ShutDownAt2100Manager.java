@@ -169,7 +169,27 @@ public class ShutDownAt2100Manager
 	/**
 	 * 启动友军“21点关机”的服务。
 	 */
-	protected void startFriendShutDownAt2100Service() 
+	public void startFriendShutDownAt2100Service() 
+	{
+    long lastNotificaitonTime =     PreferenceManagerUtil.getLastNotificationTime(context); // Get the last notification time.
+    long currentTimestamp=System.currentTimeMillis(); //获取当前时间戳。
+    
+    long timeDifference = currentTimestamp - lastNotificaitonTime; // Calculate the time diffirence.
+    
+    long notificationTimeDistance = 348 * 1000;
+    
+    if (timeDifference > notificationTimeDistance) // waited for enough tme.
+    {
+      startShutDownAt2100Service() ; // Start the service.
+
+      PreferenceManagerUtil.setLastNotificationTime(currentTimestamp, context); // Remember the last notification time.
+    } // if (timeDifference > notificationTimeDistance) // waited for enough tme.
+	} //protected void startFriendShutDownAt2100Service()
+
+	/**
+	 * 启动友军“21点关机”的服务。
+	 */
+	private void startShutDownAt2100Service() 
 	{
 		//com.stupidbeauty.shutdownat2100androidnative.TimeCheckService
 		
@@ -180,11 +200,11 @@ public class ShutDownAt2100Manager
 		{
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) //前台服务
 			{
-              context.startForegroundService(intentt); //启动前台服务
+        context.startForegroundService(intentt); //启动前台服务
 			} //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) //前台服务
 			else //没有前台服务
 			{
-              context.startService(intentt); //启动服务。
+        context.startService(intentt); //启动服务。
 			} //else //没有前台服务
 		}
 		catch (IllegalStateException e) //不允许启动服务。
@@ -194,10 +214,10 @@ public class ShutDownAt2100Manager
 
 		try
 		{
-          Intent intenttFloating = new Intent();
-          intenttFloating.setComponent(new ComponentName("com.stupidbeauty.shutdownat2100androidnative", "com.example.lzc.floatingwindowdemo.service.FloatingService")); //设置组件。
+      Intent intenttFloating = new Intent();
+      intenttFloating.setComponent(new ComponentName("com.stupidbeauty.shutdownat2100androidnative", "com.example.lzc.floatingwindowdemo.service.FloatingService")); //设置组件。
 
-          context.startService(intenttFloating); //启动服务。
+      context.startService(intenttFloating); //启动服务。
 		}
 		catch (IllegalStateException e) //不允许启动服务。
 		{
@@ -312,9 +332,9 @@ public class ShutDownAt2100Manager
     if (shouldCheck) // Should check.
     {
       Log.d(TAG, CodePosition.newInstance().toString()+ ", package name: "+ packageName + ", exceeded: " + exceededShutDownTime + ", shut down hour: " + shutDownHour + ", shut down minute: " + shutDownMinute); // Debug.
-      checkWhetherExceededShutDownTime(); //检查，是否超过了关机时间。
+      checkWhetherExceededShutDownTime(); // 检查，是否超过了关机时间。
 
-      lastCheckShutDownTimeMilliseconds=now;
+      lastCheckShutDownTimeMilliseconds = now;
 
       if (exceededShutDownTime) // 是超过了关机时间。
       {
@@ -406,8 +426,13 @@ public class ShutDownAt2100Manager
 			GregorianCalendar t=new GregorianCalendar(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
 
 			GregorianCalendar thresholdTime=new GregorianCalendar(t.get(GregorianCalendar.YEAR),t.get(GregorianCalendar.MONTH),t.get(GregorianCalendar.DATE),shutDownHour,shutDownMinute); //阈值时间。
+			
+			int powerUpHour = 7;
+			int powerUpMinute = 1;
+			
+			GregorianCalendar powerUpTime = new GregorianCalendar(t.get(GregorianCalendar.YEAR),t.get(GregorianCalendar.MONTH),t.get(GregorianCalendar.DATE), powerUpHour, powerUpMinute); // The time of power up.
 
-			if (t.after(thresholdTime)) //时间比阈值时间还要晚。
+			if (t.after(thresholdTime) || t.before(powerUpTime)) // Later than shutdown time, or earlier than power up time.
 			{
 				exceededShutDownTime=true;
 			} //if (t.after(thresholdTime)) //时间比阈值时间还要晚。

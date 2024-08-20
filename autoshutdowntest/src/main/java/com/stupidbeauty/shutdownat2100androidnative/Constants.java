@@ -19,6 +19,7 @@ public class Constants
     public static final String SHUTDOWN_HOUR="shutdownHour"; //!<关机的小时数。
     public static final String SHUTDOWN_MINUTE="shutdownMinute"; //!<关机的分钟数。
     public static final String EverInstalledShutDownAt2100="com.stupidbeauty.shutdownat2100.shutdownat2100helper.everInstalledShutDownAt2100"; //!< Ever installed shut down at 2100 ?
+    public static final String LastNotificationTime = "com.stupidbeauty.shutdownat2100.shutdownat2100helper.lastNotificationTime"; //!< Last notification time.
   } //public final class Common
 
   public final class Timing
