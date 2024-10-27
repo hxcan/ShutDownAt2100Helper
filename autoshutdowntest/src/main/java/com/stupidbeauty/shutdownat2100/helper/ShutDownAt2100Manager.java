@@ -1,5 +1,6 @@
 package com.stupidbeauty.shutdownat2100.helper;
 
+import com.stupidbeauty.shutdownat2100.receiver.ShutDownAt2100Receiver;
 import com.stupidbeauty.codeposition.CodePosition;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
@@ -74,6 +75,7 @@ import java.util.Set;
  */
 public class ShutDownAt2100Manager
 {
+  private ShutDownAt2100Receiver receiver;
   private ShutDownAt2100Manager shutDownAt2100Manager; //!< Shut down at 2100 manager.
   private int shutDownHour=-1; //!<关机小时数。
   private int shutDownMinute=-1; //!<关机分钟数。
@@ -162,8 +164,20 @@ public class ShutDownAt2100Manager
     loadShutDownAt2100Configuration(); //载入21点关机的配置信息。
 
     checkShutDownTime(); //检查关机时间。
+    
+        this.receiver = new ShutDownAt2100Receiver();
+
+    registerReceiverForOtherPackages(); // Register receiver to receive information broadcast from other packages which also have ShutDownAt2100Helper library included.
   } //private void startUdpServer()
 
+    public void registerReceiverForOtherPackages() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.BroadcastAction.SHUT_DOWN_AT_2100_INSTALLED);
+        context.registerReceiver(receiver, filter);
+    }
+
+
+  
 	private String clipboardText=""; //!<剪贴板文字内容。
 	
 	/**
@@ -292,8 +306,16 @@ public class ShutDownAt2100Manager
 	public void setEverInstalledShutDownAt2100()
 	{
     PreferenceManagerUtil.setEverInstalledShutDownAt2100(context);
+    
+    sendShutDownAt2100InstalledBroadcast(context, true); // Send the broadcast, ever installed shutdownat2100.
 	} // public void setEverInstalledShutDownAt2100()
-	
+
+    public static void sendShutDownAt2100InstalledBroadcast(Context context, boolean isInstalled) {
+        Intent intent = new Intent(Constants.BroadcastAction.SHUT_DOWN_AT_2100_INSTALLED);
+        intent.putExtra("isInstalled", isInstalled);
+        context.sendBroadcast(intent);
+    }
+
 	/**
 	* Check , if installed shut down at 2100 ever.
 	*/
