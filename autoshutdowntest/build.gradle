@@ -89,7 +89,7 @@ afterEvaluate
         from components.release
         groupId = 'com.github.hxcan'
         artifactId = 'ShutDownAt2100Helper'
-        version = '2024.8.25'
+        version = '2024.10.29'
       }
     }
   }
