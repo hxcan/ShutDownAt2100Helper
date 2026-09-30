@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.BufferedReader;
 import com.stupidbeauty.shutdownat2100.helper.ShutDownAt2100Manager;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
@@ -116,11 +117,20 @@ public class ShutDownAt2100Manager
 	 */
 	public void writeShutDownTimeToExternalStorage(int clock_time, int ClkMnt)
 	{
-    // [INSERT] Android 11+（API 30）检查外置存储管理权限。无权限时不写入，避免 SecurityException。
-    if (!ExternalStoragePermissionChecker.hasManageExternalStoragePermission(context))
+    // [INSERT] Android 11+（API 30）：权限缺失时主动申请，不影响原有写流程。
+    // 即使没权限，下面仍按原逻辑尝试写，由系统的 SecurityException 决定成败。
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+        && !ExternalStoragePermissionChecker.hasManageExternalStoragePermission(context))
     {
-      Log.w(TAG, CodePosition.newInstance().toString() + ", writeShutDownTimeToExternalStorage aborted: missing MANAGE_EXTERNAL_STORAGE on Android 11+"); // Debug.
-      return;
+      Log.w(TAG, CodePosition.newInstance().toString() + ", writeShutDownTimeToExternalStorage: MANAGE_EXTERNAL_STORAGE missing, requesting from user (write attempt follows)");
+      if (context instanceof Activity)
+      {
+        ExternalStoragePermissionChecker.requestManageExternalStoragePermission((Activity) context);
+      }
+      else
+      {
+        Log.w(TAG, CodePosition.newInstance().toString() + ", writeShutDownTimeToExternalStorage: context is not Activity, cannot request permission");
+      }
     }
     Log.d(TAG, "writeShutDownTimeToExternalStorage, shut down time: "+ clock_time + ", " + ClkMnt); //Debug.
 
@@ -254,13 +264,22 @@ public class ShutDownAt2100Manager
 	 */
 	private void loadShutDownAt2100Configuration()
 	{
-    // [INSERT] Android 11+（API 30）检查外置存储管理权限。无权限时直接返回，回退到 PreferenceManager 读取。
-    if (!ExternalStoragePermissionChecker.hasManageExternalStoragePermission(context))
+    // [INSERT] Android 11+（API 30）：权限缺失时主动申请，不影响原有读流程。
+    // 即使没权限，下面仍按原逻辑尝试读，由系统的 SecurityException 决定成败。
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+        && !ExternalStoragePermissionChecker.hasManageExternalStoragePermission(context))
     {
-      Log.w(TAG, CodePosition.newInstance().toString() + ", loadShutDownAt2100Configuration skipped external file, fallback to preference"); // Debug.
-      readShutDownTimeFromPreference();
-      return;
+      Log.w(TAG, CodePosition.newInstance().toString() + ", loadShutDownAt2100Configuration: MANAGE_EXTERNAL_STORAGE missing, requesting from user (read attempt follows)");
+      if (context instanceof Activity)
+      {
+        ExternalStoragePermissionChecker.requestManageExternalStoragePermission((Activity) context);
+      }
+      else
+      {
+        Log.w(TAG, CodePosition.newInstance().toString() + ", loadShutDownAt2100Configuration: context is not Activity, cannot request permission");
+      }
     }
+
       File goddessCameraDirectory=new File(Constants.DirPath.FARMING_BOOK_APP_SD_CARD_PATH); //女神相机目录。
 
       goddessCameraDirectory.mkdirs(); //创建目录。
