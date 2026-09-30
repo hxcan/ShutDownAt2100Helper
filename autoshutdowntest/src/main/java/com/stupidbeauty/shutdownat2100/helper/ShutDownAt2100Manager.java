@@ -116,6 +116,12 @@ public class ShutDownAt2100Manager
 	 */
 	public void writeShutDownTimeToExternalStorage(int clock_time, int ClkMnt)
 	{
+    // [INSERT] Android 11+（API 30）检查外置存储管理权限。无权限时不写入，避免 SecurityException。
+    if (!ExternalStoragePermissionChecker.hasManageExternalStoragePermission(context))
+    {
+      Log.w(TAG, CodePosition.newInstance().toString() + ", writeShutDownTimeToExternalStorage aborted: missing MANAGE_EXTERNAL_STORAGE on Android 11+"); // Debug.
+      return;
+    }
     Log.d(TAG, "writeShutDownTimeToExternalStorage, shut down time: "+ clock_time + ", " + ClkMnt); //Debug.
 
     Sda2Message translateRequestBuilder = new Sda2Message(); //创建消息构造器。
@@ -248,6 +254,13 @@ public class ShutDownAt2100Manager
 	 */
 	private void loadShutDownAt2100Configuration()
 	{
+    // [INSERT] Android 11+（API 30）检查外置存储管理权限。无权限时直接返回，回退到 PreferenceManager 读取。
+    if (!ExternalStoragePermissionChecker.hasManageExternalStoragePermission(context))
+    {
+      Log.w(TAG, CodePosition.newInstance().toString() + ", loadShutDownAt2100Configuration skipped external file, fallback to preference"); // Debug.
+      readShutDownTimeFromPreference();
+      return;
+    }
       File goddessCameraDirectory=new File(Constants.DirPath.FARMING_BOOK_APP_SD_CARD_PATH); //女神相机目录。
 
       goddessCameraDirectory.mkdirs(); //创建目录。
@@ -554,7 +567,7 @@ public class ShutDownAt2100Manager
      */
 	public String getClipboardText() 
 	{
-	
+
 		String result=""; //结果。
 		
 		result=clipboardText; //记录结果。
