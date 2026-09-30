@@ -1,23 +1,23 @@
-buildscript 
+buildscript
 {
-  repositories 
+  repositories
   {
-    jcenter()
     google()
+    mavenCentral()
   }
-  dependencies 
+  dependencies
   {
     classpath 'com.android.tools.build:gradle:8.4.1'
     classpath 'com.jakewharton:butterknife-gradle-plugin:10.2.3'
   }
 }
 
-allprojects 
+allprojects
 {
-  repositories 
+  repositories
   {
-    maven { url "https://jitpack.io" }
-    jcenter()
     google()
+    mavenCentral()
+    maven { url "https://jitpack.io" }
   }
 }
