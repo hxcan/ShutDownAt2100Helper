@@ -4,12 +4,12 @@ apply plugin: 'maven-publish'
 
 version="2020.1.27"
 
-android 
+android
 {
-  compileSdkVersion 29
+  compileSdkVersion 30
   namespace 'com.stupidbeauty.shutdownat2100.helper'
 
-  defaultConfig 
+  defaultConfig
   {
     buildToolsVersion = "30.0.3"
     minSdkVersion 14
@@ -18,21 +18,21 @@ android
     versionName version
   }
 
-  buildTypes 
+  buildTypes
   {
-    release 
+    release
     {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
     }
   }
 
-  compileOptions 
+  compileOptions
   {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
-  
+
   publishing
   {
     singleVariant('release')
@@ -78,9 +78,9 @@ tasks.withType(JavaCompile).configureEach {
     ]
 }
 
-afterEvaluate 
+afterEvaluate
 {
-  publishing 
+  publishing
   {
     publications
     {
@@ -94,4 +94,3 @@ afterEvaluate
     }
   }
 }
-
