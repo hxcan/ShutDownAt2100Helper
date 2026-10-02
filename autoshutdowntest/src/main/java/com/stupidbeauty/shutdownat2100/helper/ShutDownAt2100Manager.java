@@ -17,6 +17,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
+import android.provider.Settings;
 import android.content.res.AssetFileDescriptor;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
@@ -110,6 +112,7 @@ public class ShutDownAt2100Manager
   protected String callbackIp="127.0.0.1"; //!<回调的IP。
   protected Set<Long> committedTransactionIdSet=new HashSet<Long>(); //!<已提交的事务编号集合。
 	
+  public void requestManageExternalStoragePermissionIfNeeded(String operation) { if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return; if (ExternalStoragePermissionChecker.hasManageExternalStoragePermission(context)) return; Log.w(TAG, operation + ": MANAGE_EXTERNAL_STORAGE missing, requesting via Application context"); try { Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION); intent.setData(Uri.parse("package:" + context.getPackageName())); intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); context.startActivity(intent); return; } catch (Exception e) {} if (context instanceof Activity) { ExternalStoragePermissionChecker.requestManageExternalStoragePermission((Activity) context); } }
 	/**
 	 * 写入关机时间到外置存储。
 	 * @param clock_time 关机的小时数。
@@ -117,21 +120,7 @@ public class ShutDownAt2100Manager
 	 */
 	public void writeShutDownTimeToExternalStorage(int clock_time, int ClkMnt)
 	{
-    // [INSERT] Android 11+（API 30）：权限缺失时主动申请，不影响原有写流程。
-    // 即使没权限，下面仍按原逻辑尝试写，由系统的 SecurityException 决定成败。
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-        && !ExternalStoragePermissionChecker.hasManageExternalStoragePermission(context))
-    {
-      Log.w(TAG, CodePosition.newInstance().toString() + ", writeShutDownTimeToExternalStorage: MANAGE_EXTERNAL_STORAGE missing, requesting from user (write attempt follows)");
-      if (context instanceof Activity)
-      {
-        ExternalStoragePermissionChecker.requestManageExternalStoragePermission((Activity) context);
-      }
-      else
-      {
-        Log.w(TAG, CodePosition.newInstance().toString() + ", writeShutDownTimeToExternalStorage: context is not Activity, cannot request permission");
-      }
-    }
+requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStorage");
     Log.d(TAG, "writeShutDownTimeToExternalStorage, shut down time: "+ clock_time + ", " + ClkMnt); //Debug.
 
     Sda2Message translateRequestBuilder = new Sda2Message(); //创建消息构造器。
@@ -264,22 +253,8 @@ public class ShutDownAt2100Manager
 	 */
 	private void loadShutDownAt2100Configuration()
 	{
-    // [INSERT] Android 11+（API 30）：权限缺失时主动申请，不影响原有读流程。
-    // 即使没权限，下面仍按原逻辑尝试读，由系统的 SecurityException 决定成败。
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-        && !ExternalStoragePermissionChecker.hasManageExternalStoragePermission(context))
-    {
-      Log.w(TAG, CodePosition.newInstance().toString() + ", loadShutDownAt2100Configuration: MANAGE_EXTERNAL_STORAGE missing, requesting from user (read attempt follows)");
-      if (context instanceof Activity)
-      {
-        ExternalStoragePermissionChecker.requestManageExternalStoragePermission((Activity) context);
-      }
-      else
-      {
-        Log.w(TAG, CodePosition.newInstance().toString() + ", loadShutDownAt2100Configuration: context is not Activity, cannot request permission");
-      }
+requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration");
     }
-
       File goddessCameraDirectory=new File(Constants.DirPath.FARMING_BOOK_APP_SD_CARD_PATH); //女神相机目录。
 
       goddessCameraDirectory.mkdirs(); //创建目录。
