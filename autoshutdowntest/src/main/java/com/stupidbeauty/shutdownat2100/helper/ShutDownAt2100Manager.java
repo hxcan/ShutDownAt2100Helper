@@ -254,7 +254,6 @@ requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStora
 	private void loadShutDownAt2100Configuration()
 	{
 requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration");
-    }
       File goddessCameraDirectory=new File(Constants.DirPath.FARMING_BOOK_APP_SD_CARD_PATH); //女神相机目录。
 
       goddessCameraDirectory.mkdirs(); //创建目录。
