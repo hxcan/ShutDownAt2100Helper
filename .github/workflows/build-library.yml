@@ -11,10 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write  # allow committing baseline.xml back to the PR branch
 
     steps:
     - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set up JDK 17
       uses: actions/setup-java@v4
@@ -35,7 +37,7 @@ jobs:
     - name: Grant execute permission to gradlew
       run: chmod +x gradlew
 
-    # Step 1: Generate lint baseline if it doesn't exist (library uses /lint-baseline.xml)
+    # Step 1: Generate lint baseline if it doesn't exist (history warnings/errors)
     - name: Generate Lint baseline (if missing)
       run: |
         if [ ! -f autoshutdowntest/lint-baseline.xml ]; then
@@ -45,23 +47,24 @@ jobs:
           echo "Baseline file exists, skipping generation"
         fi
 
-    # Step 2: Run lint with baseline (suppresses pre-existing issues, blocks NEW errors)
+    # Step 2: Run lint with baseline (suppresses historical issues, blocks NEW errors)
     - name: Run Lint with baseline
       run: ./gradlew :autoshutdowntest:lintRelease --warning-mode none
 
-    # Step 3: Build Release AAR (library product, no APK signing required)
+    # Step 3: Build release AAR (library product, no APK signing required)
     - name: Build Release AAR
       run: |
         export GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx2048m -Dorg.gradle.daemon=false"
         ./gradlew :autoshutdowntest:assembleRelease --warning-mode none
 
-    # Step 4: Publish to localMaven (verifies publication configuration is valid)
+    # Step 4: Publish to localMaven (verifies publication configuration)
     - name: Publish to localMaven
       run: ./gradlew :autoshutdowntest:publishReleasePublicationToMavenLocal --warning-mode none
 
-    # Step 5: Auto-commit baseline back to repo (only on push to master)
+    # Step 5: Auto-commit lint baseline back to branch (if anything changed)
+    # 此步在 PR 和 push 模式下都会执行：确保 baseline.xml 一定会出现在仓库里
     - name: Auto-commit lint baseline
-      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      if: github.event_name == 'push' || github.event_name == 'pull_request'
       run: |
         if [ -f autoshutdowntest/lint-baseline.xml ]; then
           git config user.name "sisterfuture-bot"
@@ -75,7 +78,7 @@ jobs:
           fi
         fi
 
-    # Upload AAR + lint baseline artifacts
+    # Upload artifacts
     - name: Upload lint baseline
       if: always()
       uses: actions/upload-artifact@v4
