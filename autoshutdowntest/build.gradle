@@ -18,6 +18,15 @@ android
     versionName version
   }
 
+  // Lint baseline: 历史遗留的 lint warnings 不会阻塞 PR，只拦截新引入的错误
+  // baseline.xml 由 :autoshudo:updateLintBaseline 任务产生（已在 workflow 中自动执行）
+  lint
+  {
+    baseline = file("lint-baseline.xml")
+    abortOnError true
+    warningsAsErrors false
+  }
+
   buildTypes
   {
     release

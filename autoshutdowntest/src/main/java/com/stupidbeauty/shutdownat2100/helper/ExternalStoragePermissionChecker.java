@@ -29,7 +29,9 @@ import android.util.Log;
  */
 public class ExternalStoragePermissionChecker {
 
-    private static final String TAG = "ExternalStoragePermissionChecker"; //!< Debug tag.
+    // 22 字符以内（Android Log tag 长度限制），原 TAG "ExternalStoragePermissionChecker" 32 字符超长。
+    // 缩写含义：External Storage Permission Checker。
+    private static final String TAG = "ExtStorPermChk"; //!< Debug tag.
 
     /**
      * Check if the calling application has MANAGE_EXTERNAL_STORAGE permission (Android 11+).

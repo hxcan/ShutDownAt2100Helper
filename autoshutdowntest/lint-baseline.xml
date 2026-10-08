@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.4.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.4.1)" variant="all" version="8.4.1">
+
+    <issue
+        id="ScopedStorage"
+        message="The Google Play store has a policy that limits usage of MANAGE_EXTERNAL_STORAGE"
+        errorLine1="  &lt;uses-permission android:name=&quot;android.permission.MANAGE_EXTERNAL_STORAGE&quot;/>"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="4"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="SuspiciousIndentation"
+        message="The indentation string here is different from on the previous line (`&quot; &quot;` vs `\t`)"
+        errorLine1="  if (shutDownHour>=0) //载入了有效的关机时间。"
+        errorLine2="~~">
+        <location
+            file="src/main/java/com/stupidbeauty/shutdownat2100/helper/ShutDownAt2100Manager.java"
+            line="452"
+            column="1"/>
+        <location
+            file="src/main/java/com/stupidbeauty/shutdownat2100/helper/ShutDownAt2100Manager.java"
+            line="450"
+            column="1"
+            message="Previous line indentation here"/>
+    </issue>
+
+    <issue
+        id="NonConstantResourceId"
+        message="Resource IDs will be non-final by default in Android Gradle Plugin version 8.0, avoid using them as annotation attributes"
+        errorLine1="    @OnClick(R2.id.dialerbutton)"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/stupidbeauty/shutdownat2100androidnative/StopUsingPhoneActivity.java"
+            line="92"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="UnspecifiedRegisterReceiverFlag"
+        message="`receiver` is missing `RECEIVER_EXPORTED` or `RECEIVER_NOT_EXPORTED` flag for unprotected broadcasts registered for com.stupidbeauty.shutdownat2100.helper.EVER_INSTALLED"
+        errorLine1="        context.registerReceiver(receiver, filter);"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/stupidbeauty/shutdownat2100/helper/ShutDownAt2100Manager.java"
+            line="181"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of `compileSdkVersion` than 30 is available: 34"
+        errorLine1="  compileSdkVersion 30"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="9"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.protobuf:protobuf-java than 3.4.0 is available: 3.22.3"
+        errorLine1="  implementation &apos;com.google.protobuf:protobuf-java:3.4.0&apos;"
+        errorLine2="                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="58"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="GradleOverrides"
+        message="This `minSdkVersion` value (`8`) is not used; it is always overridden by the value specified in the Gradle build script (`14`)"
+        errorLine1="  &lt;uses-sdk android:minSdkVersion=&quot;8&quot; android:targetSdkVersion=&quot;21&quot;/>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="5"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleOverrides"
+        message="This `targetSdkVersion` value (`21`) is not used; it is always overridden by the value specified in the Gradle build script (`27`)"
+        errorLine1="  &lt;uses-sdk android:minSdkVersion=&quot;8&quot; android:targetSdkVersion=&quot;21&quot;/>"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="5"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="DiscouragedApi"
+        message="Should not restrict activity to fixed orientation. This may not be suitable for different form factors, causing the app to be letterboxed."
+        errorLine1="    &lt;activity android:name=&quot;com.stupidbeauty.shutdownat2100androidnative.StopUsingPhoneActivity&quot; android:screenOrientation=&quot;portrait&quot; android:label=&quot;@string/stopUsingPhone&quot; android:exported=&quot;true&quot;>"
+        errorLine2="                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="7"
+            column="98"/>
+    </issue>
+
+    <issue
+        id="TrustAllX509TrustManager"
+        message="`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers">
+        <location
+            file="$GRADLE_USER_HOME/caches/transforms-4/608e560eaa0e3059dc9c359b845bf272/transformed/androidasync-2.1.7/jars/classes.jar"/>
+    </issue>
+
+    <issue
+        id="ExpiredTargetSdkVersion"
+        message="Google Play requires that apps target API level 33 or higher."
+        errorLine1="  &lt;uses-sdk android:minSdkVersion=&quot;8&quot; android:targetSdkVersion=&quot;21&quot;/>"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="5"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="ExpiredTargetSdkVersion"
+        message="Google Play requires that apps target API level 33 or higher."
+        errorLine1="    targetSdkVersion 27"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="16"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="IconMissingDensityFolder"
+        message="Missing density variation folders in `src/main/res`: drawable-mdpi, drawable-xhdpi, drawable-xxhdpi">
+        <location
+            file="src/main/res"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Button&quot;, should use `@string` resource"
+        errorLine1="        android:text=&quot;Button&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_auto_shut_down_test_main.xml"
+            line="25"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="RtlCompat"
+        message="To support older versions than API 17 (project specifies 14) you should **also** add `android:layout_alignParentLeft=&quot;false&quot;`"
+        errorLine1="    android:layout_alignParentStart=&quot;false&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/cn_sentence_activity.xml"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="RtlCompat"
+        message="To support older versions than API 17 (project specifies 14) you should **also** add `android:layout_alignParentLeft=&quot;false&quot;`"
+        errorLine1="      android:layout_alignParentStart=&quot;false&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/stop_using_phone_activity.xml"
+            line="31"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider adding `android:layout_alignStart=&quot;@+id/textView1&quot;` to better support right-to-left layouts"
+        errorLine1="        android:layout_alignLeft=&quot;@+id/textView1&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_auto_shut_down_test_main.xml"
+            line="21"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider adding `android:layout_marginStart=&quot;16dp&quot;` to better support right-to-left layouts"
+        errorLine1="        android:layout_marginLeft=&quot;16dp&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_auto_shut_down_test_main.xml"
+            line="23"
+            column="9"/>
+    </issue>
+
+</issues>
