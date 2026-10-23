@@ -72,9 +72,9 @@ import java.util.Set;
 /**
  * Example of writing an input method for a soft keyboard.  This code is
  * focused on simplicity over completeness, so it should in no way be considered
- * to be a complete soft keyboard implementation.  Its purpose is to provide
- * a basic example for how you would get started writing an input method, to
- * be fleshed out as appropriate.
+ * to be a complete soft keyboard implementation.  Its purpose is to provide a
+ * basic example for how you would get started writing an input method, to be
+ * fleshed out as appropriate.
  */
 public class ShutDownAt2100Manager
 {
@@ -117,7 +117,7 @@ public class ShutDownAt2100Manager
 	 * 写入关机时间到外置存储。
 	 * @param clock_time 关机的小时数。
 	 * @param ClkMnt 关机的分钟数。
-	 */
+	 * */
 	public void writeShutDownTimeToExternalStorage(int clock_time, int ClkMnt)
 	{
 requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStorage");
@@ -139,7 +139,7 @@ requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStora
 
     byte[] messageContent=cborObject.EncodeToBytes();
 
-    // String arrayString=new String(array);
+		// String arrayString=new String(array);
 
 		
 		//写入文件：
@@ -187,7 +187,7 @@ requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStora
 	
 	/**
 	 * 启动友军“21点关机”的服务。
-	 */
+	 * */
 	public void startFriendShutDownAt2100Service() 
 	{
     long lastNotificaitonTime =     PreferenceManagerUtil.getLastNotificationTime(context); // Get the last notification time.
@@ -202,12 +202,12 @@ requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStora
       startShutDownAt2100Service() ; // Start the service.
 
       PreferenceManagerUtil.setLastNotificationTime(currentTimestamp, context); // Remember the last notification time.
-    } // if (timeDifference > notificationTimeDistance) // waited for enough tme.
+    } //if (timeDifference > notificationTimeDistance) // waited for enough tme.
 	} //protected void startFriendShutDownAt2100Service()
 
 	/**
 	 * 启动友军“21点关机”的服务。
-	 */
+	 * */
 	private void startShutDownAt2100Service() 
 	{
 		//com.stupidbeauty.shutdownat2100androidnative.TimeCheckService
@@ -245,12 +245,12 @@ requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStora
 		catch (SecurityException e) //安全异常
 		{
 			e.printStackTrace(); //报告错误。
-		} //catch (SecurityException e) //安全异常
+		} //catch (SecurityException e)
 	} //protected void startFriendShutDownAt2100Service()
 
 	/**
 	 * 载入21点关机的配置信息。
-	 */
+	 * */
 	private void loadShutDownAt2100Configuration()
 	{
 requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration");
@@ -334,7 +334,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 
 	/**
 	 * 检查关机时间。
-	 */
+	 * */
 	public void checkShutDownTime()
 	{
     //是否超过了关机时间。
@@ -384,7 +384,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 
 	/**
 	 * Execute shutdown. Or equivalent operations.
-	 */
+	 * */
 	public void executeShutDown(String packageName)
 	{
     Log.d(TAG, CodePosition.newInstance().toString()+ ", package name: "+ packageName + ", exceeded: " + exceededShutDownTime + ", shut down hour: " + shutDownHour + ", shut down minute: " + shutDownMinute); // Debug.
@@ -402,7 +402,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
     try
     {
       context.startActivity(launchIntent); // 启动 stop using phone 窗口。
-    } //
+    }// 
     catch (ActivityNotFoundException e)
     {
       e.printStackTrace();
@@ -411,7 +411,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 
 	/**
 	 * Execute shutdown. Or equivalent operations.
-	 */
+	 * */
 	public void executeShutDown()
 	{
     // Intent launchIntent=new Intent(); //获取当前软件包的启动意图。
@@ -431,7 +431,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
     // try
     // {
     //   context.startActivity(launchIntent); // 启动 stop using phone 窗口。
-    // } //
+    // }
     // catch (ActivityNotFoundException e)
     // {
     //   e.printStackTrace();
@@ -440,7 +440,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 
 	/**
 	 * 检查，是否超过了关机时间。
-	 */
+	 * */
 	private void checkWhetherExceededShutDownTime()
 	{
     Log.d(TAG, "checkWhetherExceededShutDownTime, shut down time: " + shutDownHour + ", " + shutDownMinute); //Debug.
@@ -483,7 +483,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 	 * 是否正在输入密码。
 	 * @param attribute 输入法属性。
 	 * @return 是否正在输入密码。
-	 */
+	 * */
 	private boolean isInputingPassword(EditorInfo attribute) 
     {
 		Log.d(TAG,"onStartInput,输入类型："+attribute.inputType+",TYPE_MASK_VARIATION之后："+(attribute.inputType & InputType.TYPE_MASK_VARIATION)+",variation password:"+InputType.TYPE_TEXT_VARIATION_PASSWORD+","+InputType.TYPE_NUMBER_VARIATION_PASSWORD+","+InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD); //Debug.
@@ -512,9 +512,19 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
      * Helper to determine if a given character code is alphabetic.
      */
     private boolean isAlphabet(int code) {
-		return Character.isLetter(code);
+    	return Character.isLetter(code);
     }
-    
+
+	/**
+	 * 判断指定的包名是否在21点关机黑名单中。
+	 * @param packageName 应用包名。
+	 * @return 在黑名单中则返回 true。
+	 */
+	public boolean isBlacklisted(String packageName)
+	{
+		return AppBlacklist.isBlacklisted(context, packageName);
+	} //public boolean isBlacklisted(String packageName)
+	
     private void checkToggleCapsLock() {
         long now = System.currentTimeMillis();
         if (mLastShiftTime + 800 > now) {
@@ -528,19 +538,19 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
     /**
      * 获取单词分隔符集合字符串。
      * @return 单词分隔符集合字符串。
-     */
+     * */
     private String getWordSeparators() 
     {
         return mWordSeparators;
     } //private String getWordSeparators()
-    
-    /**
-     * 判断指定的代码是不是单词分隔符。
-     * @param code 要判断的代码。
-     * @return 是否是单词分隔符。
-     */
-    public boolean isWordSeparator(int code) 
-    {
+	
+	/**
+	 * 判断指定的代码是不是单词分隔符。
+	 * @param code 要判断的代码。
+	 * @return 是否是单词分隔符。
+	 * */
+	public boolean isWordSeparator(int code) 
+	{
         String separators = getWordSeparators(); //获取单词分隔符集合字符串。
         return separators.contains(String.valueOf((char)code)); //包含，则是的。
     } //public boolean isWordSeparator(int code)
@@ -557,7 +567,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
     /**
      * 获取剪贴板文字。
      * @return 剪贴板文字。
-     */
+     * */
 	public String getClipboardText() 
 	{
 
