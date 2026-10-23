@@ -186,7 +186,7 @@ requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStora
 	private String clipboardText=""; //!<剪贴板文字内容。
 	
 	/**
-	 * 启动友军“21点关机”的服务。
+	 * 启动友军"21点关机"的服务。
 	 * */
 	public void startFriendShutDownAt2100Service() 
 	{
@@ -206,7 +206,7 @@ requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStora
 	} //protected void startFriendShutDownAt2100Service()
 
 	/**
-	 * 启动友军“21点关机”的服务。
+	 * 启动友军"21点关机"的服务。
 	 * */
 	private void startShutDownAt2100Service() 
 	{
@@ -455,8 +455,12 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 
 			GregorianCalendar thresholdTime=new GregorianCalendar(t.get(GregorianCalendar.YEAR),t.get(GregorianCalendar.MONTH),t.get(GregorianCalendar.DATE),shutDownHour,shutDownMinute); //阈值时间。
 			
-			int powerUpHour = 7;
-			int powerUpMinute = 1;
+			// 从 AppPreferences 读取早晨阈值时间，修复硬编码 7:01 的问题。
+			int powerUpHour = AppPreferences.getMorningHour(context);
+			if (powerUpHour < 0) powerUpHour = 7; // 未配置时使用默认值。
+			
+			int powerUpMinute = AppPreferences.getMorningMinute(context);
+			if (powerUpMinute < 0) powerUpMinute = 1; // 未配置时使用默认值。
 			
 			GregorianCalendar powerUpTime = new GregorianCalendar(t.get(GregorianCalendar.YEAR),t.get(GregorianCalendar.MONTH),t.get(GregorianCalendar.DATE), powerUpHour, powerUpMinute); // The time of power up.
 
@@ -524,6 +528,19 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 	{
 		return AppBlacklist.isBlacklisted(context, packageName);
 	} //public boolean isBlacklisted(String packageName)
+
+	/**
+	 * 判断指定的包名当前是否允许启动。
+	 *
+	 * <p>根据黑名单和双时段窗口（晚间窗口、早晨窗口）综合判定。</p>
+	 *
+	 * @param packageName 应用包名。
+	 * @return 允许启动返回 true，禁止启动返回 false。
+	 */
+	public boolean isLaunchAllowed(String packageName)
+	{
+		return LaunchPolicy.isLaunchAllowed(context, packageName);
+	} //public boolean isLaunchAllowed(String packageName)
 	
     private void checkToggleCapsLock() {
         long now = System.currentTimeMillis();
