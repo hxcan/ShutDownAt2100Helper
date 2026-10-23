@@ -289,8 +289,7 @@ public class LaunchPolicy
      */
     public static boolean isShutDownTimeNow(Context context, Integer shutDownHour, Integer shutDownMinute)
     {
-        Result result = checkShutdownPeriod(context, shutDownHour, shutDownMinute); //查询所处时段。
-        return result; //直接返回。
+        return checkShutdownPeriod(context, shutDownHour, shutDownMinute); //直接返回。
     } //public static boolean isShutDownTimeNow(Context context, Integer shutDownHour, Integer shutDownMinute)
 
     /**
