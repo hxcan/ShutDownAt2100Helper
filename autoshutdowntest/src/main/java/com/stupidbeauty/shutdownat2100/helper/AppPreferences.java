@@ -41,6 +41,21 @@ public class AppPreferences
     private static final String KEY_MORNING_MINUTE = "morning_minute";
 
     /**
+     * 是否在关机时段开启勿扰模式的键。
+     * */
+    private static final String KEY_ENABLE_DND_ON_SHUTDOWN = "enable_dnd_on_shutdown";
+
+    /**
+     * 是否在关机时段结束后自动恢复勿扰模式的键。
+     * */
+    private static final String KEY_RESTORE_DND_AFTER_SHUTDOWN_PERIOD = "restore_dnd_after_shutdown_period";
+
+    /**
+     * 勿扰模式过滤级别的键。
+     * */
+    private static final String KEY_DND_FILTER_MODE = "dnd_filter_mode";
+
+    /**
      * 不允许实例化。
      */
     private AppPreferences()
@@ -176,5 +191,71 @@ public class AppPreferences
         editor.putInt(KEY_SHUT_DOWN_MINUTE, minute); //设置分钟。
         editor.apply(); //保存。
     } //public static void setShutDownTime(Context context, int hour, int minute)
+
+    /**
+     * 是否在关机时段开启勿扰模式。
+     *
+     * @param context 上下文。
+     * @return 返回 true 表示开启，默认开启。
+     * */
+    public static boolean getEnableDndOnShutdown(Context context)
+    {
+        return getPreferences(context).getBoolean(KEY_ENABLE_DND_ON_SHUTDOWN, true);
+    } //public static boolean getEnableDndOnShutdown(Context context)
+
+    /**
+     * 设置是否在关机时段开启勿扰模式。
+     *
+     * @param context 上下文。
+     * @param enable 是否开启。
+     * */
+    public static void setEnableDndOnShutdown(Context context, boolean enable)
+    {
+        getPreferences(context).edit().putBoolean(KEY_ENABLE_DND_ON_SHUTDOWN, enable).apply();
+    } //public static void setEnableDndOnShutdown(Context context, boolean enable)
+
+    /**
+     * 是否在关机时段结束后自动恢复勿扰模式。
+     *
+     * @param context 上下文。
+     * @return 返回 true 表示自动恢复，默认自动恢复。
+     * */
+    public static boolean getRestoreDndAfterShutDownPeriod(Context context)
+    {
+        return getPreferences(context).getBoolean(KEY_RESTORE_DND_AFTER_SHUTDOWN_PERIOD, true);
+    } //public static boolean getRestoreDndAfterShutDownPeriod(Context context)
+
+    /**
+     * 设置是否在关机时段结束后自动恢复勿扰模式。
+     *
+     * @param context 上下文。
+     * @param restore 是否自动恢复。
+     * */
+    public static void setRestoreDndAfterShutDownPeriod(Context context, boolean restore)
+    {
+        getPreferences(context).edit().putBoolean(KEY_RESTORE_DND_AFTER_SHUTDOWN_PERIOD, restore).apply();
+    } //public static void setRestoreDndAfterShutDownPeriod(Context context, boolean restore)
+
+    /**
+     * 获取勿扰模式过滤级别。
+     *
+     * @param context 上下文。
+     * @return 过滤级别，默认使用「仅优先打扰」。
+     * */
+    public static int getDndFilterMode(Context context)
+    {
+        return getPreferences(context).getInt(KEY_DND_FILTER_MODE, android.app.NotificationManager.INTERRUPTION_FILTER_PRIORITY);
+    } //public static int getDndFilterMode(Context context)
+
+    /**
+     * 设置勿扰模式过滤级别。
+     *
+     * @param context 上下文。
+     * @param mode 过滤级别。
+     * */
+    public static void setDndFilterMode(Context context, int mode)
+    {
+        getPreferences(context).edit().putInt(KEY_DND_FILTER_MODE, mode).apply();
+    } //public static void setDndFilterMode(Context context, int mode)
 
 } //public class AppPreferences

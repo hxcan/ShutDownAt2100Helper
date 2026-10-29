@@ -364,6 +364,10 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 
       lastCheckShutDownTimeMilliseconds = now;
 
+      // 同步勿扰模式状态：判定为关机时段则开启勿扰，早晨时段结束后自动恢复。
+      // 判定完全复用 exceededShutDownTime，与原设计的关机时间点严格一致。
+      DndController.syncDoNotDisturb(context, exceededShutDownTime);
+
       if (exceededShutDownTime) // 是超过了关机时间。
       {
         executeShutDown(); //执行关机过程。
