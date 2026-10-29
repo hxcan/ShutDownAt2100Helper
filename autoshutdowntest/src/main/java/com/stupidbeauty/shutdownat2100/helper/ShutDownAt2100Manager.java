@@ -73,7 +73,7 @@ import java.util.Set;
  * Example of writing an input method for a soft keyboard.  This code is
  * focused on simplicity over completeness, so it should in no way be considered
  * to be a complete soft keyboard implementation.  Its purpose is to provide a
- * basic example of how you would get started writing an input method, to be
+ * basic example for how you would get started writing an input method, to be
  * fleshed out as appropriate.
  */
 public class ShutDownAt2100Manager
@@ -133,7 +133,7 @@ requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStora
 
 		translateRequestBuilder.setShutDownAt2100ConfigurationMessage(shutDownAt2100ConfigurationBuilder); //设置关机消息。
 
-		// final byte[] messageContent=translateRequestBuilder.build().toByteArray(); //序列化成字节数组。
+		// final byte[] messageContent=translateRequestBuilder.build().toByteArray();//序列化成字节数组。
 
     CBORObject cborObject= CBORObject.FromObject(translateRequestBuilder); //创建对象
 
@@ -143,20 +143,20 @@ requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStora
 
 		
 		//写入文件：
-	File goddessCameraDirectory=new File(Constants.DirPath.FARMING_BOOK_APP_SD_CARD_PATH); //女神相机目录。
+		File goddessCameraDirectory=new File(Constants.DirPath.FARMING_BOOK_APP_SD_CARD_PATH); //女神相机目录。
 
-	goddessCameraDirectory.mkdirs(); //创建目录。
+		goddessCameraDirectory.mkdirs(); //创建目录。
 
-	File configurationFile=new File(goddessCameraDirectory, "shutdownat2100.oot"); //配置文件对象。
+		File configurationFile=new File(goddessCameraDirectory, "shutdownat2100.oot"); //配置文件对象。
 
-	try
-	{
-		FileUtils.writeByteArrayToFile(configurationFile, messageContent); //写入到文件中去。
-	}
-	catch (IOException e)
-	{
-		e.printStackTrace();
-	}
+		try
+		{
+			FileUtils.writeByteArrayToFile(configurationFile, messageContent); //写入到文件中去。
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	} //private void writeShutDownTimeToExternalStorage(int clock_time, int ClkMnt)
 
   /**
@@ -240,11 +240,11 @@ requestManageExternalStoragePermissionIfNeeded("writeShutDownTimeToExternalStora
 		}
 		catch (IllegalStateException e) //不允许启动服务。
 		{
-			e.printStackTrace();
+			e.printStackTrace(); //报告错误。
 		} //catch (IllegalStateException e) //不允许启动服务。
 		catch (SecurityException e) //安全异常
 		{
-			e.printStackTrace();
+			e.printStackTrace(); //报告错误。
 		} //catch (SecurityException e)
 	} //protected void startFriendShutDownAt2100Service()
 
@@ -270,11 +270,11 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
         {
           ShutDownAt2100ConfigurationMessage commitTextMessage=amqpMessage.getShutDownAt2100ConfigurationMessage(); //获取提交文字消息。
 
-          // Sda2FunctionName functionName=amqpMessage.getFunctionName();
+          // Sda2FunctionName functionName=amqpMessage.getFunctionName(); //
 
-			//获取关机小时数。
+          //获取关机小时数。
           shutDownHour = commitTextMessage.getHour();
-			//获取关机分钟数。
+          //获取关机分钟数。
           shutDownMinute = commitTextMessage.getMinute();
 
 
@@ -330,7 +330,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
     boolean shutDownHour=PreferenceManagerUtil.getEverInstalledShutDownAt2100(context);
     
     return shutDownHour;
-	} // public void getEverInstalledShutDownAt2100()
+	} // public boolean getEverInstalledShutDownAt2100()
 
 	/**
 	 * 检查关机时间。
@@ -391,7 +391,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 	 * */
 	public void executeShutDown(String packageName)
 	{
-    Log.d(TAG, CodePosition.newInstance().toString()+ ", package name: " + packageName + ", exceeded: " + exceededShutDownTime + ", shut down hour: " + shutDownHour + ", shut down minute: " + shutDownMinute); // Debug.
+    Log.d(TAG, CodePosition.newInstance().toString()+ ", package name: "+ packageName + ", exceeded: " + exceededShutDownTime + ", shut down hour: " + shutDownHour + ", shut down minute: " + shutDownMinute); // Debug.
     Intent launchIntent=new Intent(); //获取当前软件包的启动意图。
     launchIntent.setAction(Intent.ACTION_MAIN); //设置动作。
 
@@ -429,7 +429,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
     // 
     // ComponentName cn = new ComponentName(packageName, serviceName);
     // launchIntent.setComponent(cn);
-
+    // 
     // launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //设置标志位。
 
     // try
@@ -500,19 +500,19 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 		int masked=inputType & InputType.TYPE_MASK_VARIATION; //做掩码计算。
 		
 		boolean result=false; //不是在输入密码。
-		if ((masked & InputType.TYPE_MASK_VARIATION) == InputType.TYPE_TEXT_VARIATION_PASSWORD) //文本类型密码。
+		if ((masked & InputType.TYPE_TEXT_VARIATION_PASSWORD) == InputType.TYPE_TEXT_VARIATION_PASSWORD) //文本类型密码。
 		{
-			result=true;
-		} //if ((masked & InputType.TYPE_MASK_VARIATION) == InputType.TYPE_TEXT_VARIATION_PASSWORD) //文本类型密码。
-		else if ((masked & InputType.TYPE_MASK_VARIATION) == InputType.TYPE_NUMBER_VARIATION_PASSWORD) //数字类型密码。
+			result=true; //是在输入密码。
+		} //if ((masked & InputType.TYPE_TEXT_VARIATION_PASSWORD) == InputType.TYPE_TEXT_VARIATION_PASSWORD) //文本类型密码。
+		else if ((masked & InputType.TYPE_NUMBER_VARIATION_PASSWORD) == InputType.TYPE_NUMBER_VARIATION_PASSWORD) //数字类型密码。
 		{
-			result=true;
-		} //else if ((masked & InputType.TYPE_MASK_VARIATION) == InputType.TYPE_NUMBER_VARIATION_PASSWORD) //数字类型密码。
-		else if ((masked & InputType.TYPE_MASK_VARIATION) == InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD) //网页类型密码。
+			result=true; //是在输入密码。
+		} //else if ((masked & InputType.TYPE_NUMBER_VARIATION_PASSWORD) == InputType.TYPE_NUMBER_VARIATION_PASSWORD) //数字类型密码。
+		else if ((masked & InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD) == InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD) //网页类型密码。
 		{
-			result=true;
-		} //else if ((masked & InputType.TYPE_MASK_VARIATION) == InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD) //网页类型密码。
-		
+			result=true; //是在输入密码。
+		} //else if ((masked & InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD) == InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD) //网页类型密码。
+	
 		return result;
 	} //private boolean isInputingPassword(EditorInfo attribute)
 
@@ -520,14 +520,14 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
      * Helper to determine if a given character code is alphabetic.
      */
     private boolean isAlphabet(int code) {
-        return Character.isLetter(code);
+    	return Character.isLetter(code);
     }
 
 	/**
 	 * 判断指定的包名是否在21点关机黑名单中。
 	 * @param packageName 应用包名。
 	 * @return 在黑名单中则返回 true。
-	 * */
+	 */
 	public boolean isBlacklisted(String packageName)
 	{
 		return AppBlacklist.isBlacklisted(context, packageName);
@@ -540,7 +540,7 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 	 *
 	 * @param packageName 应用包名。
 	 * @return 允许启动返回 true，禁止启动返回 false。
-	 * */
+	 */
 	public boolean isLaunchAllowed(String packageName)
 	{
 		return LaunchPolicy.isLaunchAllowed(context, packageName);
@@ -550,17 +550,18 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
         long now = System.currentTimeMillis();
         if (mLastShiftTime + 800 > now) {
             mCapsLock = !mCapsLock;
+            mLastShiftTime = 0;
         } else {
             mLastShiftTime = now;
         }
     }
     
-	/**
-	 * 获取单词分隔符集合字符串。
-	 * @return 单词分隔符集合字符串。
-	 * */
-	private String getWordSeparators() 
-	{
+    /**
+     * 获取单词分隔符集合字符串。
+     * @return 单词分隔符集合字符串。
+     * */
+    private String getWordSeparators() 
+    {
         return mWordSeparators;
     } //private String getWordSeparators()
 	
@@ -584,10 +585,10 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
     public void onRelease(int primaryCode) {
     }
 
-	/**
-	 * 获取剪贴板文字。
-	 * @return 剪贴板文字。
-	 * */
+    /**
+     * 获取剪贴板文字。
+     * @return 剪贴板文字。
+     * */
 	public String getClipboardText() 
 	{
 
