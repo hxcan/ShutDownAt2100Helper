@@ -466,12 +466,34 @@ requestManageExternalStoragePermissionIfNeeded("loadShutDownAt2100Configuration"
 			int powerUpMinute = AppPreferences.getMorningMinute(context);
 			if (powerUpMinute < 0) powerUpMinute = 1; // 未配置时使用默认值。
 			
-			GregorianCalendar powerUpTime = new GregorianCalendar(t.get(GregorianCalendar.YEAR),t.get(GregorianCalendar.MONTH),t.get(GregorianCalendar.DATE), powerUpHour, powerUpMinute); // The time of power up.
+			// 修复跨零点判断：关机时段跨越午夜（21:00 – 次日 07:01），
+			// 不能用同一天的绝对时间点直接比较，否则跨过午夜后 t 已是「明天」，
+			// 而 powerUpTime 仍是「今天 07:01」，导致 00:00–07:01 整段漏判、限制失效。
+			// 改为按「分钟数在一日内的偏移」比较，天然跨天安全。
+			int currentHour = t.get(GregorianCalendar.HOUR_OF_DAY);
+			int currentMinute = t.get(GregorianCalendar.MINUTE);
+			int currentMinutes = currentHour * 60 + currentMinute;                 // 当前时刻在一天内的分钟偏移。
+			int shutDownMinutes = shutDownHour * 60 + shutDownMinute;              // 关机时刻在一天内的分钟偏移。
+			int powerUpMinutes = powerUpHour * 60 + powerUpMinute;                // 早晨时刻在一天内的分钟偏移。
 
-			if (t.after(thresholdTime) || t.before(powerUpTime)) // Later than shutdown time, or earlier than power up time.
+			// 关机时段在一天内的分钟区间：若早晨时刻不晚于关机时刻，说明时段跨越午夜（当前配置 21:00 – 07:01 即属此类）。
+			boolean crossesMidnight = powerUpMinutes <= shutDownMinutes;
+			// 跨天时段：关机时刻之后（含），或早晨时刻之前（含）。
+			// 非跨天时段：判断当前时刻是否落在关机时刻与早晨时刻之间。
+			boolean inShutDownPeriod;
+			if (crossesMidnight)
+			{
+				inShutDownPeriod = (currentMinutes >= shutDownMinutes) || (currentMinutes <= powerUpMinutes);
+			}
+			else
+			{
+				inShutDownPeriod = (currentMinutes >= shutDownMinutes) && (currentMinutes <= powerUpMinutes);
+			}
+
+			if (inShutDownPeriod) // In the shut down period.
 			{
 				exceededShutDownTime=true;
-			} //if (t.after(thresholdTime)) //时间比阈值时间还要晚。
+			} //if (inShutDownPeriod) //处于关机时段。
 			else // not exceeded
 			{
 				exceededShutDownTime=false;
